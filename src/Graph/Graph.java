@@ -35,13 +35,13 @@ public class Graph {
 						setNode(r,c,new Node(new PowerUp(((PowerUp)board[r][c]).getPowerUpType())));
 						
 						if(generateGraphHelper(r+1,c,board))
-							getNode(r,c).setEdge(0, true);
+							getNode(r,c).addEdge(getNode(r+1,c));
 						if(generateGraphHelper(r,c+1,board))
-							getNode(r,c).setEdge(1, true);
+							getNode(r,c).addEdge(getNode(r,c+1));
 						if(generateGraphHelper(r-1,c,board))
-							getNode(r,c).setEdge(2, true);
+							getNode(r,c).addEdge(getNode(r-1,c));
 						if(generateGraphHelper(r,c-1,board))
-							getNode(r,c).setEdge(3, true);
+							getNode(r,c).addEdge(getNode(r,c-1));
 						
 					}
 					else if(board[r][c].getType() == Type.TANK)
@@ -49,13 +49,13 @@ public class Graph {
 						setNode(r,c,new Node(new Tank(board[r][c].getPlayer())));
 						
 						if(generateGraphHelper(r+1,c,board))
-							getNode(r,c).setEdge(0, true);
+							getNode(r,c).addEdge(getNode(r+1,c));
 						if(generateGraphHelper(r,c+1,board))
-							getNode(r,c).setEdge(1, true);
+							getNode(r,c).addEdge(getNode(r,c+1));
 						if(generateGraphHelper(r-1,c,board))
-							getNode(r,c).setEdge(2, true);
+							getNode(r,c).addEdge(getNode(r-1,c));
 						if(generateGraphHelper(r,c-1,board))
-							getNode(r,c).setEdge(3, true);
+							getNode(r,c).addEdge(getNode(r,c-1));
 					}
 					
 						
@@ -64,14 +64,15 @@ public class Graph {
 				else
 				{
 					setNode(r,c,new Node(null));
+					
 					if(generateGraphHelper(r+1,c,board))
-						getNode(r,c).setEdge(0, true);
+						getNode(r,c).addEdge(getNode(r+1,c));
 					if(generateGraphHelper(r,c+1,board))
-						getNode(r,c).setEdge(1, true);
+						getNode(r,c).addEdge(getNode(r,c+1));
 					if(generateGraphHelper(r-1,c,board))
-						getNode(r,c).setEdge(2, true);
+						getNode(r,c).addEdge(getNode(r-1,c));
 					if(generateGraphHelper(r,c-1,board))
-						getNode(r,c).setEdge(3, true);
+						getNode(r,c).addEdge(getNode(r,c-1));
 				}
 			}
 		}

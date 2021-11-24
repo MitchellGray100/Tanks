@@ -1,8 +1,12 @@
 package Board;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 import Graph.Graph;
+import Graph.Node;
 import piece.Brick;
 import piece.Piece;
 import piece.Piece.Player;
@@ -54,7 +58,7 @@ public abstract class AbstractBoard implements Board{
 			}
 			//generates the graph for tanksConnect
 			graph = generateGraph(board);
-		}while(!tanksConnect(graph));
+		}while(!tanksConnect(graph, graph.getNode(8,1), graph.getNode(1, 8)));
 		
 		
 		//creates the powerUp
@@ -65,6 +69,7 @@ public abstract class AbstractBoard implements Board{
 		
 		return graph;
 	}
+	
 	@Override
 	public Graph generateGraph(Piece[][] board) {
 		Graph graph = new Graph();
@@ -73,17 +78,57 @@ public abstract class AbstractBoard implements Board{
 		return graph;
 		
 	}
-	@Override
-	public Graph createBoard() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
-	public boolean tanksConnect(Graph graph) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean tanksConnect(Graph graph, Node s, Node d) {
+		LinkedList<Integer>temp;
+		 
+        // Mark all the vertices as not visited(By default set
+        // as false)
+        HashSet<Node> visited = new HashSet<Node>();
+ 
+        // Create a queue for BFS
+        LinkedList<Node> queue = new LinkedList<Node>();
+ 
+        // Mark the current node as visited and enqueue it
+        visited.add(s);
+        queue.add(s);
+ 
+        // 'i' will be used to get all adjacent vertices of a vertex
+        Iterator<Node> i;
+        while (queue.size()!=0)
+        {
+            // Dequeue a vertex from queue and print it
+            s = queue.poll();
+ 
+            Node n;
+            i = s.getEdges().listIterator();
+ 
+            // Get all adjacent vertices of the dequeued vertex s
+            // If a adjacent has not been visited, then mark it
+            // visited and enqueue it
+            while (i.hasNext())
+            {
+                n = i.next();
+ 
+                // If this adjacent node is the destination node,
+                // then return true
+                if (n==d)
+                    return true;
+ 
+                // Else, continue to do BFS
+                if (!visited.contains(n))
+                {
+                    visited.add(n);
+                    queue.add(n);
+                }
+            }
+        }
+ 
+        // If BFS is complete without visited d
+        return false;
+    }
 
 	@Override
 	public boolean generatePowerUp(Piece[][] board) {

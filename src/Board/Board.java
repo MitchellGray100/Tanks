@@ -1,18 +1,13 @@
 package Board;
 
 import Graph.Graph;
+import Graph.Node;
 import piece.Piece;
 
 public interface Board {
 	
-	/**
-	 * Creates the board that contains all objects.
-	 * @return the board as a graph
-	 */
-	Graph createBoard();
 	
 	/**
-	 * Helper Function for createBoard.
 	 * Generates a random board with 2 tanks, a border of bricks, and 15 random bricks.
 	 * @return the board as a graph
 	 */
@@ -22,10 +17,12 @@ public interface Board {
 	/**
 	 * Helper Function for generatePowerUp.
 	 * Checks to see if the tanks can reach each other
-	 * @param The graph of the board
+	 * @param graph The graph of the board
+	 * @param s The source node
+	 * @param d The destination Node
 	 * @return True if there is a path connecting the tanks.
 	 */
-	boolean tanksConnect(Graph graph);
+	boolean tanksConnect(Graph graph, Node s, Node d);
 	
 	/**
 	 * Helper Function for generateBoard.

@@ -1,17 +1,16 @@
 package Graph;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import piece.Piece;
 
 public class Node {
 	
 	private Piece piece;
 	
-	//edges documentation:
-	//	  	    [0] UP
-	//			[1] RIGHT
-	//			[2] DOWN
-	//			[3] LEFT
-	private boolean[] edges = new boolean[4];
+	
+	private List<Node> edges = new LinkedList<Node>();
 	
 	public Node(Piece pieceType)
 	{
@@ -30,16 +29,17 @@ public class Node {
 	 * Returns whether the specified edge exists
 	 * @return whether the specified edge exists
 	 */
-	public boolean[] getEdges() {
+	public List<Node> getEdges() {
 		return edges;
 	}
-
+	
 	/**
-	 * Sets the specified edge to be bool
-	 * @param edgeNum Indication of which edge to change
-	 * @param bool Indication of whether the edge exists.
+	 * Adds an edge to the list of edges
+	 * @param node the edge to add
 	 */
-	public void setEdge(int edgeNum, boolean bool) {
-		edges[edgeNum] = bool;
+	public void addEdge(Node node)
+	{
+		edges.add(node);
 	}
+
 }
