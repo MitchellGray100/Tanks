@@ -23,7 +23,8 @@ public interface Piece {
 		BRICK,
 		BULLET,
 		POWERUP,
-		TANK
+		TANK,
+		NONE
 	}
 	
 	enum Player{
