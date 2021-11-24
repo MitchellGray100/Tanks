@@ -67,8 +67,10 @@ public abstract class AbstractBoard implements Board{
 	}
 	@Override
 	public Graph generateGraph(Piece[][] board) {
-		return null;
-		// TODO Auto-generated method stub
+		Graph graph = new Graph();
+		graph.generateGraph(board);
+		
+		return graph;
 		
 	}
 	@Override
