@@ -97,4 +97,14 @@ public class Graph {
 	{
 		graph[r][c] = node;
 	}
+	public void reset()
+	{
+		for(int r = 0; r< 10; r++)
+		{
+			for(int c = 0; c < 10; c++)
+			{
+				graph[r][c].setDistance(Integer.MAX_VALUE);
+			}
+		}
+	}
 }

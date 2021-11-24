@@ -8,13 +8,14 @@ import piece.Piece;
 public class Node {
 	
 	private Piece piece;
-	
+	private int distance;
 	
 	private List<Node> edges = new LinkedList<Node>();
 	
 	public Node(Piece pieceType)
 	{
 		setPiece(pieceType);
+		setDistance(Integer.MAX_VALUE);
 	}
 
 	public Piece getPiece() {
@@ -40,6 +41,14 @@ public class Node {
 	public void addEdge(Node node)
 	{
 		edges.add(node);
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
 	}
 
 }

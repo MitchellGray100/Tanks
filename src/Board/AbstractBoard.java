@@ -3,6 +3,7 @@ package Board;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import Graph.Graph;
@@ -10,6 +11,7 @@ import Graph.Node;
 import piece.Brick;
 import piece.Piece;
 import piece.Piece.Player;
+import piece.PowerUp;
 import piece.Tank;
 
 public abstract class AbstractBoard implements Board{
@@ -38,35 +40,38 @@ public abstract class AbstractBoard implements Board{
 		board[8][1] = new Tank(Player.ONE);
 		board[1][8] = new Tank(Player.TWO);
 		
+		boolean powerSpawned = false;
 		do {
-			//Creates the Random Bricks
-			Random random = new Random();
-			int r;
-			int c;
-			int bricks = 15;
-		
-			while(bricks > 0)
-			{
-				r = random.nextInt(7);
-				c = random.nextInt(7);
-			
-				if(board[r][c] == null)
+			do {
+				//Creates the Random Bricks
+				Random random = new Random();
+				int r;
+				int c;
+				int bricks = 15;
+				
+				while(bricks > 0)
 				{
-					board[r][c] = new Brick();
-					bricks--;
+					r = random.nextInt(7);
+					c = random.nextInt(7);
+			
+					if(board[r][c] == null)
+					{
+						board[r][c] = new Brick();
+						bricks--;
+					}
 				}
-			}
-			//generates the graph for tanksConnect
+				//generates the graph for tanksConnect
+				graph = generateGraph(board);
+			}while(!tanksConnect(graph, graph.getNode(8,1), graph.getNode(1, 8)));
+		
+		
+			//creates the powerUp
+			powerSpawned = generatePowerUp(graph, board);
+		
+			//Regenerates the graph with the new powerup in it
 			graph = generateGraph(board);
-		}while(!tanksConnect(graph, graph.getNode(8,1), graph.getNode(1, 8)));
-		
-		
-		//creates the powerUp
-		generatePowerUp(board);
-		
-		//Regenerates the graph with the new powerup in it
-		graph = generateGraph(board);
-		
+		}
+		while(!powerSpawned);
 		return graph;
 	}
 	
@@ -131,8 +136,94 @@ public abstract class AbstractBoard implements Board{
     }
 
 	@Override
-	public boolean generatePowerUp(Piece[][] board) {
-		// TODO Auto-generated method stub
+	public boolean generatePowerUp(Graph graph, Piece[][] board) {
+		//Getting distances from player one tank
+		Queue<Node> frontier = new LinkedList<Node>();
+		frontier.add(graph.getNode(8, 1));
+		graph.getNode(8, 1).setDistance(0);
+		int[][] distances = new int[10][10];
+		
+		while (!frontier.isEmpty()) {
+		    Node g = frontier.poll();
+		    for (Node v: g.getEdges()) {
+		        if (v.getDistance() == Integer.MAX_VALUE) {
+		            frontier.add(v);
+		            v.setDistance(g.getDistance() + 1);
+		        }
+		    }
+		}
+		
+		for(int r  = 0; r <10; r++)
+		{
+			for(int c = 0;c < 10; c++)
+			{
+				distances[r][c] = graph.getNode(r,c).getDistance();
+			}
+		}
+		graph.reset();
+		
+		
+		//Getting distances from player two tank
+		Queue<Node> frontier2 = new LinkedList<Node>();
+		int[][] distances2 = new int[10][10];
+		frontier2.add(graph.getNode(1, 8));
+		graph.getNode(1, 8).setDistance(0);
+		
+		
+		while (!frontier2.isEmpty()) {
+		    Node g = frontier2.poll();
+		    for (Node v: g.getEdges()) {
+		        if (v.getDistance() == Integer.MAX_VALUE) {
+		            frontier2.add(v);
+		            v.setDistance(g.getDistance() +1);
+		        }
+		    }
+		}
+		for(int r  = 0; r <10; r++)
+		{
+			for(int c = 0;c < 10; c++)
+			{
+				distances2[r][c] = graph.getNode(r,c).getDistance();
+			}
+		}
+		
+		
+		//Finding the spot
+		boolean done = false;
+		Random random = new Random();
+		int rand = random.nextInt(4);
+		Piece.PowerUpType powerUp;
+		switch(rand)
+		{
+			case 0: 
+				powerUp = Piece.PowerUpType.FASTSHOOT;
+				break;
+			case 1: 
+				powerUp = Piece.PowerUpType.FASTSPEED;
+				break;
+			case 2: 
+				powerUp = Piece.PowerUpType.FASTSHOOT;
+				break;
+			default: 
+				powerUp = Piece.PowerUpType.SHIELD;
+				break;
+		}
+		
+		for(int r = 0; r < 10; r++)
+		{
+			for(int c = 0; c < 10; c++)
+			{
+				if(distances[r][c] == distances2[r][c] && board[r][c] == null) 
+				{
+					done = true;
+					graph.setNode(r, c, new Node(new PowerUp(powerUp)));
+				}
+				if(done)
+				{
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 

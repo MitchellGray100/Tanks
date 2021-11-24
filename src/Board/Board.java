@@ -27,9 +27,11 @@ public interface Board {
 	/**
 	 * Helper Function for generateBoard.
 	 * Generates a power up that is an equal distance of indexes from both tanks.
+	 * @param graph The graph of the game
+	 * @param board The board of the game
 	 * @return Returns false if it cant.
 	 */
-	boolean generatePowerUp(Piece[][] board);
+	boolean generatePowerUp(Graph graph, Piece[][] board);
 	
 	/**
 	 * Helper Function for generateBoard.
