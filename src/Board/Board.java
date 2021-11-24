@@ -18,25 +18,28 @@ public interface Board {
 	 */
 	Graph generateBoard();
 	
-	/**
-	 * Helper Function for generateBoard()
-	 * Generates a random 2D array with 2 tanks, a border of bricks, and 15 random bricks.
-	 * @return the board as a 2D array of Pieces.
-	 */
-	Piece[][] generatePieces();
+	
 	/**
 	 * Helper Function for generatePowerUp.
 	 * Checks to see if the tanks can reach each other
+	 * @param The graph of the board
 	 * @return True if there is a path connecting the tanks.
 	 */
-	boolean tanksConnect();
+	boolean tanksConnect(Graph graph);
 	
 	/**
-	 * Helper Function for createBoard.
+	 * Helper Function for generateBoard.
 	 * Generates a power up that is an equal distance of indexes from both tanks.
 	 * @return Returns false if it cant.
 	 */
-	boolean generatePowerUp();
+	boolean generatePowerUp(Piece[][] board);
+	
+	/**
+	 * Helper Function for generateBoard.
+	 * Generates a graph of the given 2D Piece Array
+	 * @param board The current board to be converted into a graph
+	 */
+	Graph generateGraph(Piece[][] board);
 	
 	
 }
