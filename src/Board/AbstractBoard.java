@@ -8,14 +8,12 @@ import java.util.Random;
 
 import Graph.Graph;
 import Graph.Node;
-import piece.Brick;
 import piece.Piece;
 import piece.Piece.Player;
-import piece.PowerUp;
-import piece.Tank;
+import piece.PieceFactory;
 
 public abstract class AbstractBoard implements Board{
-
+	PieceFactory factory = new PieceFactory();
 	Graph board = new Graph();
 	
 	@Override
@@ -26,25 +24,26 @@ public abstract class AbstractBoard implements Board{
 		//Creates The Vertical Borders
 		for(int r = 0; r < 10; r++)
 		{
-			board[r][0] = new Brick();
-			board[r][9] = new Brick();
+			board[r][0] = factory.getBrick();
+			board[r][9] = factory.getBrick();
 		}
 		//Creates the Horizontal Borders
 		for(int c = 0; c < 10; c++)
 		{
-			board[0][c] = new Brick();
-			board[9][c] = new Brick();
+			board[0][c] = factory.getBrick();
+			board[9][c] = factory.getBrick();
 		}
 		
 		//Creates the Tanks
-		board[8][1] = new Tank(Player.ONE);
-		board[1][8] = new Tank(Player.TWO);
+		board[8][1] = factory.getTank(Player.ONE);
+		board[1][8] = factory.getTank(Player.TWO);
+		
+		Random random = new Random();
 		
 		boolean powerSpawned = false;
 		do {
 			do {
 				//Creates the Random Bricks
-				Random random = new Random();
 				int r;
 				int c;
 				int bricks = 15;
@@ -56,7 +55,7 @@ public abstract class AbstractBoard implements Board{
 			
 					if(board[r][c] == null)
 					{
-						board[r][c] = new Brick();
+						board[r][c] = factory.getBrick();
 						bricks--;
 					}
 				}
@@ -87,7 +86,6 @@ public abstract class AbstractBoard implements Board{
 
 	@Override
 	public boolean tanksConnect(Graph graph, Node s, Node d) {
-		LinkedList<Integer>temp;
 		 
         // Mark all the vertices as not visited(By default set
         // as false)
@@ -216,7 +214,7 @@ public abstract class AbstractBoard implements Board{
 				if(distances[r][c] == distances2[r][c] && board[r][c] == null) 
 				{
 					done = true;
-					graph.setNode(r, c, new Node(new PowerUp(powerUp)));
+					graph.setNode(r, c, new Node(factory.getPowerUp(powerUp)));
 				}
 				if(done)
 				{
