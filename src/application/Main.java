@@ -23,41 +23,33 @@ public class Main extends Application {
 	private boolean tankTwoMoveRight;
 	private boolean tankTwoMoveDown;
 	private boolean tankTwoMoveLeft;
-//	private Piece tankOne = new Piece(100,800, 100, 100, "tank", Color.GREEN);
-//	private Piece tankTwo = new Piece(800,100, 100, 100, "tank", Color.GREEN);
 	public Parent createContent(Stage primaryStage)
 	{
 		root.setPrefSize(1000, 1000);
-//		root.getChildren().add(tankOne);
-//		root.getChildren().add(tankTwo);
+
 		for(int r = 0; r < 10; r++)
 		{
-//			root.getChildren().add(new Piece(r*100,0,100,100, "brick", Color.MAROON));
-//			root.getChildren().add(new Piece(r*100,900,100,100, "brick", Color.MAROON));
-//
-//			root.getChildren().add(new Piece(0,r*100,100,100, "brick", Color.MAROON));
-//			root.getChildren().add(new Piece(900,r*100,100,100, "brick", Color.MAROON));
-		}
-		for(int r = 1; r < 9; r++)
-		{
-			for(int c = 1; c < 9; c++)
+			for(int c = 0; c < 10; c++)
 			{
-				switch(controller.getSquarePiece(r, c).getType())
+				if(controller.getSquarePiece(r, c) != null)
 				{
-				case BRICK:
-					root.getChildren().add(new Piece(r*100,c * 100,100,100, "brick", Color.MAROON));
-					break;
-				case BULLET:
-					break;
-				case POWERUP:
-					root.getChildren().add(new Piece(r*100,c * 100,100,100, "powerup", Color.LIME));
-					break;
-				case TANK:
-					root.getChildren().add(new Piece(r*100,c * 100,100,100, "brick", Color.GREEN));
-					break;
-				default:
-					break;
+					switch(controller.getSquarePiece(r, c).getType())
+					{
+					case BRICK:
+						root.getChildren().add(new Piece(r*100,c * 100,100,100, "brick", Color.MAROON));
+						break;
+					case BULLET:
+						break;
+					case POWERUP:
+						root.getChildren().add(new Piece(r*100,c * 100,100,100, "powerup", Color.SKYBLUE));
+						break;
+					case TANK:
+						root.getChildren().add(new Piece(r*100,c * 100,100,100, "brick", Color.GREEN));
+						break;
+					default:
+						break;
 				
+					}
 				}
 			}
 		}
@@ -69,7 +61,7 @@ public class Main extends Application {
 				update();
 			}
 		};
-//		timer.start();
+		timer.start();
 		return root;
 	}
 	private void update()

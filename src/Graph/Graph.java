@@ -12,6 +12,7 @@ public class Graph {
 	public Graph()
 	{
 		graph = new Node[10][10];
+		
 	}
 	
 	/**
@@ -20,9 +21,9 @@ public class Graph {
 	 */
 	public void generateGraph(Piece[][] board)
 	{
-		for(int r = 0; r < 9; r++)
+		for(int r = 0; r < 10; r++)
 		{
-			for(int c = 0; c < 9; c++)
+			for(int c = 0; c < 10; c++)
 			{
 				if(board[r][c] != null)
 				{
@@ -33,6 +34,36 @@ public class Graph {
 					else if(board[r][c].getType() == Type.POWERUP)
 					{
 						setNode(r,c,new Node(new PowerUp(((PowerUp)board[r][c]).getPowerUpType())));
+						
+						
+					}
+					else if(board[r][c].getType() == Type.TANK)
+					{
+						setNode(r,c,new Node(new Tank(board[r][c].getPlayer())));
+					}
+					
+						
+					
+				}
+				else
+				{
+					setNode(r,c,new Node(null));
+				}
+			}
+		}
+		
+		for(int r = 0; r < 10; r++)
+		{
+			for(int c = 0; c < 10; c++)
+			{
+				if(board[r][c] != null)
+				{
+					if(board[r][c].getType() == Type.BRICK)
+					{
+						setNode(r,c,new Node(new Brick()));
+					}
+					else if(board[r][c].getType() == Type.POWERUP)
+					{
 						
 						if(generateGraphHelper(r+1,c,board))
 							getNode(r,c).addEdge(getNode(r+1,c));
@@ -45,9 +76,7 @@ public class Graph {
 						
 					}
 					else if(board[r][c].getType() == Type.TANK)
-					{
-						setNode(r,c,new Node(new Tank(board[r][c].getPlayer())));
-						
+					{	
 						if(generateGraphHelper(r+1,c,board))
 							getNode(r,c).addEdge(getNode(r+1,c));
 						if(generateGraphHelper(r,c+1,board))
@@ -63,7 +92,6 @@ public class Graph {
 				}
 				else
 				{
-					setNode(r,c,new Node(null));
 					
 					if(generateGraphHelper(r+1,c,board))
 						getNode(r,c).addEdge(getNode(r+1,c));
@@ -87,6 +115,11 @@ public class Graph {
 		{
 			return true;
 		}
+		else if(board[r][c].getType() == Piece.Type.POWERUP || board[r][c].getType() == Piece.Type.TANK)
+		{
+			return true;
+		}
+		
 		return false;
 	}
 

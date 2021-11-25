@@ -43,15 +43,25 @@ public abstract class AbstractBoard implements Board{
 		boolean powerSpawned = false;
 		do {
 			do {
+				for(int r = 1; r < 9; r++)
+				{
+					for(int c = 1; c <9; c++)
+					{
+						if(board[r][c] != null && board[r][c].getType() != Piece.Type.TANK)
+						{
+							board[r][c] = null;
+						}
+					}
+				}
 				//Creates the Random Bricks
 				int r;
 				int c;
-				int bricks = 15;
+				int bricks = 15 + random.nextInt(6);
 				
 				while(bricks > 0)
 				{
-					r = random.nextInt(7);
-					c = random.nextInt(7);
+					r = random.nextInt(10);
+					c = random.nextInt(10);
 			
 					if(board[r][c] == null)
 					{
@@ -215,6 +225,7 @@ public abstract class AbstractBoard implements Board{
 				{
 					done = true;
 					graph.setNode(r, c, new Node(factory.getPowerUp(powerUp)));
+					board[r][c] = factory.getPowerUp(powerUp);
 				}
 				if(done)
 				{
