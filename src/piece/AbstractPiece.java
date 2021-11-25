@@ -1,6 +1,8 @@
 package piece;
 
 public abstract class AbstractPiece implements Piece {
+
+	private Direction direction;
 	private Type type;
 	private Player player;
 	
@@ -33,5 +35,13 @@ public abstract class AbstractPiece implements Piece {
 	{
 		type = pieceType;
 		player = piecePlayer;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
 	}
 }

@@ -2,7 +2,6 @@ package piece;
 
 public class Tank extends AbstractPiece{
 	
-	private Direction direction;
 	private boolean shield = false;
 	private double shootSpeedMultiplier;
 	private double bulletSpeedMultiplier;
@@ -16,11 +15,11 @@ public class Tank extends AbstractPiece{
 		setTankSpeedMultiplier(1);
 		if(piecePlayer == Player.ONE)
 		{
-			direction = Direction.UP;
+			setDirection(Direction.UP);
 		}
 		else
 		{
-			direction = Direction.DOWN;
+			setDirection(Direction.DOWN);
 		}
 		
 	}
@@ -33,13 +32,6 @@ public class Tank extends AbstractPiece{
 		this.shield = shield;
 	}
 
-	public Direction getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
 
 	public double getBulletSpeedMultiplier() {
 		return bulletSpeedMultiplier;

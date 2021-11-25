@@ -61,4 +61,8 @@ public interface Piece {
 	 */
 	void setPlayer(Player playerType);
 	
+	
+	public Direction getDirection();
+	
+	public void setDirection(Direction direction);
 }
