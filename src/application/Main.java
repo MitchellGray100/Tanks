@@ -15,6 +15,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import piece.PowerUp;
+import piece.Tank;
 
 
 public class Main extends Application {
@@ -22,6 +24,7 @@ public class Main extends Application {
 	private Pane root = new Pane();
 	private Piece tankOne;
 	private Piece tankTwo;
+	private Piece powerUp;
 	private boolean tankOneCollision = false;
 	private boolean tankTwoCollision = false;
 	private LinkedList<Piece> brickList = new LinkedList<Piece>();
@@ -53,7 +56,8 @@ public class Main extends Application {
 					case BULLET:
 						break;
 					case POWERUP:
-						root.getChildren().add(new Piece(r*100+25,c * 100+25,50,50, "powerup", Color.SKYBLUE,r,c));
+						powerUp = new Piece(r*100+25,c * 100+25,50,50, "powerup", null,r,c);
+						root.getChildren().add(powerUp);
 						break;
 					case TANK:
 						if(controller.getSquarePiece(r, c).getPlayer() == piece.Piece.Player.ONE)
@@ -294,7 +298,52 @@ public class Main extends Application {
 					
 				}
 			});
-			
+			if(tankTwo.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
+			{
+				powerUp.dead = true;
+				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
+				{
+				case FASTBULLET:
+					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setBulletSpeedMultiplier(1.5);
+					break;
+				case FASTSHOOT:
+					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShootSpeedMultiplier(1.5);
+					break;
+				case FASTSPEED:
+					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setTankSpeedMultiplier(1.5);
+					break;
+				case SHIELD:
+					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(true);
+					break;
+				default:
+					break;
+				
+				}
+						
+					
+						
+			}
+			if(tankOne.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
+			{
+				powerUp.dead = true;
+				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
+				{
+				case FASTBULLET:
+					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setBulletSpeedMultiplier(1.5);
+					break;
+				case FASTSHOOT:
+					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShootSpeedMultiplier(1.5);
+					break;
+				case FASTSPEED:
+					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setTankSpeedMultiplier(1.5);
+					break;
+				case SHIELD:
+					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(true);
+					break;
+				default:
+					break;
+				}
+			}
 			root.getChildren().removeIf(n -> {
 				Piece s = (Piece) n;
 				return s.dead;
@@ -306,7 +355,7 @@ public class Main extends Application {
 		
 	}
 	
-	private static class Piece extends StackPane {
+	public class Piece extends StackPane {
 		boolean dead = false;
 		final String type;
 		Rectangle border;
@@ -323,6 +372,27 @@ public class Main extends Application {
 			{
 				getChildren().add(indication);
 			}
+			if(type.equals("powerup"))
+			{
+				switch(((PowerUp)controller.getSquarePiece(r, c)).getPowerUpType())
+				{
+				case FASTBULLET:
+					border.setFill(Color.GOLD);
+					break;
+				case FASTSHOOT:
+					border.setFill(Color.RED);
+					break;
+				case FASTSPEED:
+					border.setFill(Color.LIME);
+					break;
+				case SHIELD:
+					border.setFill(Color.SKYBLUE);
+					break;
+				default:
+					break;
+				
+				}
+			}
 			this.type = type;
 			setTranslateX(x);
 			setTranslateY(y);
@@ -330,18 +400,19 @@ public class Main extends Application {
 			this.c = c;
 		}
 		void moveLeft() {
-			setTranslateX(getTranslateX() - 2.5);
+			
+			setTranslateX(getTranslateX() - (2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 		}
 		void moveRight()
 		{
-			setTranslateX(getTranslateX() +2.5);
+			setTranslateX(getTranslateX() +(2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 		}
 		void moveUp() {
-			setTranslateY(getTranslateY() - 2.5);
+			setTranslateY(getTranslateY() -(2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 		}
 		void moveDown()
 		{
-			setTranslateY(getTranslateY() + 2.5);
+			setTranslateY(getTranslateY() + (2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 		}
 	}
 	@Override

@@ -199,12 +199,11 @@ public abstract class AbstractBoard implements Board{
 		//Finding the spot
 		boolean done = false;
 		Random random = new Random();
-		int rand = random.nextInt(4);
 		Piece.PowerUpType powerUp;
-		switch(rand)
+		switch(random.nextInt(4))
 		{
 			case 0: 
-				powerUp = Piece.PowerUpType.FASTSHOOT;
+				powerUp = Piece.PowerUpType.FASTBULLET;
 				break;
 			case 1: 
 				powerUp = Piece.PowerUpType.FASTSPEED;
