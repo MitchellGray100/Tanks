@@ -1,5 +1,6 @@
 package application;
 	
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -22,6 +24,7 @@ public class Main extends Application {
 	private Piece tankTwo;
 	private boolean tankOneCollision = false;
 	private boolean tankTwoCollision = false;
+	private LinkedList<Piece> brickList = new LinkedList<Piece>();
 	private boolean tankOneMoveUp;
 	private boolean tankOneMoveRight;
 	private boolean tankOneMoveDown;
@@ -34,7 +37,6 @@ public class Main extends Application {
 	public Parent createContent(Stage primaryStage)
 	{
 		root.setPrefSize(1000, 1000);
-
 		for(int r = 0; r < 10; r++)
 		{
 			for(int c = 0; c < 10; c++)
@@ -44,22 +46,24 @@ public class Main extends Application {
 					switch(controller.getSquarePiece(r, c).getType())
 					{
 					case BRICK:
-						root.getChildren().add(new Piece(r*100,c * 100,100,100, "brick", Color.MAROON));
+						Piece temp = new Piece(r*100,c * 100,100,100, "brick", Color.MAROON,r,c);
+						brickList.add(temp);
+						root.getChildren().add(temp);
 						break;
 					case BULLET:
 						break;
 					case POWERUP:
-						root.getChildren().add(new Piece(r*100,c * 100,100,100, "powerup", Color.SKYBLUE));
+						root.getChildren().add(new Piece(r*100,c * 100,100,100, "powerup", Color.SKYBLUE,r,c));
 						break;
 					case TANK:
 						if(controller.getSquarePiece(r, c).getPlayer() == piece.Piece.Player.ONE)
 						{
-							tankOne = new Piece(r*100,c * 100+50,50,50, "tankOne", Color.GREEN);
+							tankOne = new Piece(r*100,c * 100+12,50,50, "tankOne", Color.GREEN,r,c);
 							root.getChildren().add(tankOne);
 						}
 						else
 						{
-							tankTwo = new Piece(r*100+50,c * 100,50,50, "tankTwo", Color.GREEN);
+							tankTwo = new Piece(r*100+50,c * 100,50,50, "tankTwo", Color.GREEN,r,c);
 							root.getChildren().add(tankTwo);
 						}
 						break;
@@ -96,29 +100,53 @@ public class Main extends Application {
 					
 					break;
 				case "tankOne":
-					if(!tankOneCollision)
-					{
+					
 						if(tankOneMoveRight)
 						{
+							for(Piece piece: brickList)
+							{
+								if(tankOne.getBoundsInParent().intersects(piece.r * 100, piece.c * 100+5, 10, 90))
+								{
+									s.moveLeft();
+								}
+							}
 							s.moveRight();
 						}
 						if(tankOneMoveLeft)
 						{
+							for(Piece piece: brickList)
+							{
+								if(tankOne.getBoundsInParent().intersects(piece.r * 100+90, piece.c * 100+5, 10, 90))
+								{
+									s.moveRight();
+								}
+							}
 							s.moveLeft();
 						}
 						if(tankOneMoveUp)
 						{
+							for(Piece piece: brickList)
+							{
+								if(tankOne.getBoundsInParent().intersects(piece.r * 100+5, piece.c * 100+90, 90, 10))
+								{
+									s.moveDown();
+								}
+							}
 							s.moveUp();
 						}
 						if(tankOneMoveDown)
 						{
+							for(Piece piece: brickList)
+							{
+								if(tankOne.getBoundsInParent().intersects(piece.r * 100+5, piece.c * 100, 90, 10))
+								{
+									s.moveUp();
+								}
+							}
 							s.moveDown();
 						}
-					}
 					break;
 				case "tankTwo":
-					if(!tankTwoCollision)
-					{
 						if(tankTwoMoveRight)
 						{
 							s.moveRight();
@@ -135,7 +163,7 @@ public class Main extends Application {
 						{
 							s.moveDown();
 						}
-					}
+					
 					break;
 					
 				}
@@ -152,15 +180,21 @@ public class Main extends Application {
 		
 	}
 	
-	private static class Piece extends Rectangle {
+	private static class Piece extends StackPane {
 		boolean dead = false;
 		final String type;
-		Piece(int x, int y, int w, int h, String type, Color color)
+		Rectangle border;
+		int r;
+		int c;
+		Piece(int x, int y, int w, int h, String type, Color color, int r, int c)
 		{
-			super(w,h,color);
+			border = new Rectangle(w,h,color);
+			getChildren().addAll(border);
 			this.type = type;
 			setTranslateX(x);
 			setTranslateY(y);
+			this.r = r;
+			this.c = c;
 		}
 		void moveLeft() {
 			setTranslateX(getTranslateX() - 2.5);
