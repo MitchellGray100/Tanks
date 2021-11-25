@@ -114,7 +114,15 @@ public class Main extends Application {
 					}
 					if(s.getBoundsInParent().intersects(tankTwo.getBoundsInParent()))
 					{
-						tankTwo.dead = true;
+						if(((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).hasShield())
+						{
+							((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(false);
+							tankTwo.border.setFill(Color.GREEN);
+						}
+						else
+						{
+							tankTwo.dead = true;
+						}
 						s.dead = true;
 					}
 					switch(s.direction)
@@ -139,12 +147,22 @@ public class Main extends Application {
 					}
 					break;
 				case "tankTwoBullet":
-					for(Piece piece: brickList)
+					if(s.getBoundsInParent().intersects(tankOne.getBoundsInParent()))
 					{
-						if(s.getBoundsInParent().intersects(tankOne.getBoundsInParent()))
+						if(((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).hasShield())
+						{
+							((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(false);
+							tankOne.border.setFill(Color.GREEN);
+						}
+						else
 						{
 							tankOne.dead = true;
 						}
+						s.dead = true;
+					}
+					for(Piece piece: brickList)
+					{
+						
 						if(s.getBoundsInParent().intersects(piece.getBoundsInParent()))
 						{
 							s.dead = true;
@@ -403,6 +421,7 @@ public class Main extends Application {
 					break;
 				case SHIELD:
 					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(true);
+					tankTwo.border.setFill(Color.ORANGE);
 					break;
 				default:
 					break;
@@ -428,6 +447,7 @@ public class Main extends Application {
 					break;
 				case SHIELD:
 					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(true);
+					tankOne.border.setFill(Color.ORANGE);
 					break;
 				default:
 					break;
