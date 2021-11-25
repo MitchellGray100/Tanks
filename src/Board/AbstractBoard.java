@@ -35,8 +35,8 @@ public abstract class AbstractBoard implements Board{
 		}
 		
 		//Creates the Tanks
-		board[8][1] = factory.getTank(Player.ONE);
-		board[1][8] = factory.getTank(Player.TWO);
+		board[8][1] = factory.getTank(Player.TWO);
+		board[1][8] = factory.getTank(Player.ONE);
 		
 		Random random = new Random();
 		
@@ -56,7 +56,7 @@ public abstract class AbstractBoard implements Board{
 				//Creates the Random Bricks
 				int r;
 				int c;
-				int bricks = 15 + random.nextInt(6);
+				int bricks = 15 + random.nextInt(8);
 				
 				while(bricks > 0)
 				{
@@ -221,7 +221,7 @@ public abstract class AbstractBoard implements Board{
 		{
 			for(int c = 0; c < 10; c++)
 			{
-				if(distances[r][c] == distances2[r][c] && board[r][c] == null) 
+				if(distances[r][c] == distances2[r][c] && board[r][c] == null && distances[r][c] != Integer.MAX_VALUE) 
 				{
 					done = true;
 					graph.setNode(r, c, new Node(factory.getPowerUp(powerUp)));
