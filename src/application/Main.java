@@ -39,7 +39,8 @@ public class Main extends Application {
 	private boolean tankOneShoot;
 	private boolean tankTwoShoot;
 	private double t = 0;
-	private double bulletTimer = 0;
+	private double tankOneBulletTimer = 1;
+	private double tankTwoBulletTimer = 1;
 	public Parent createContent(Stage primaryStage)
 	{
 		root.setPrefSize(1000, 1000);
@@ -103,11 +104,80 @@ public class Main extends Application {
 			pieces().forEach(s -> {
 				switch(s.type)
 				{
-				case "bullet":
+				case "tankOneBullet":
+					for(Piece piece: brickList)
+					{
+						if(s.getBoundsInParent().intersects(piece.getBoundsInParent()))
+						{
+							s.dead = true;
+						}
+					}
+					if(s.getBoundsInParent().intersects(tankTwo.getBoundsInParent()))
+					{
+						tankTwo.dead = true;
+						s.dead = true;
+					}
+					switch(s.direction)
+					{
+					case DOWN:
+						s.moveDown();
+						break;
+					case LEFT:
+						s.moveLeft();
+						s.setRotate(90);
+						break;
+					case RIGHT:
+						s.moveRight();
+						s.setRotate(90);
+						break;
+					case UP:
+						s.moveUp();
+						break;
+					default:
+						break;
 					
+					}
+					break;
+				case "tankTwoBullet":
+					for(Piece piece: brickList)
+					{
+						if(s.getBoundsInParent().intersects(tankOne.getBoundsInParent()))
+						{
+							tankOne.dead = true;
+						}
+						if(s.getBoundsInParent().intersects(piece.getBoundsInParent()))
+						{
+							s.dead = true;
+						}
+						
+					}
+					switch(s.direction)
+					{
+					case DOWN:
+						s.moveDown();
+						break;
+					case LEFT:
+						s.moveLeft();
+						s.setRotate(90);
+						break;
+					case RIGHT:
+						s.moveRight();
+						s.setRotate(90);
+						break;
+					case UP:
+						s.moveUp();
+						break;
+					default:
+						break;
+					
+					}
 					break;
 				case "tankOne":
-						
+					tankOneBulletTimer-=.01;
+					if(tankOneBulletTimer < 0)
+					{
+						tankOneBulletTimer = 0;
+					}
 						if(tankOneShoot)
 						{
 							shoot(tankOne);
@@ -209,7 +279,12 @@ public class Main extends Application {
 						}
 					break;
 				case "tankTwo":
-					if(tankOneShoot)
+					tankTwoBulletTimer-=.01;
+					if(tankTwoBulletTimer < 0)
+					{
+						tankTwoBulletTimer = 0;
+					}
+					if(tankTwoShoot)
 					{
 						shoot(tankTwo);
 					}
@@ -311,6 +386,7 @@ public class Main extends Application {
 					
 				}
 			});
+			
 			if(tankTwo.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
 			{
 				powerUp.dead = true;
@@ -357,6 +433,10 @@ public class Main extends Application {
 					break;
 				}
 			}
+			
+			
+			
+			
 			root.getChildren().removeIf(n -> {
 				Piece s = (Piece) n;
 				return s.dead;
@@ -370,12 +450,13 @@ public class Main extends Application {
 	
 	private void shoot(Piece who)
 	{
-		if(bulletTimer < 1)
+		if(tankOneBulletTimer < 1)
 		{
-			bulletTimer+=.22;
+			tankOneBulletTimer+=1.4;
 		
-		Piece s = new Piece((int)who.getTranslateX() + 20, (int)who.getTranslateY(), 5, 20,who.type+"bullet" , Color.BLACK,Integer.MAX_VALUE,Integer.MAX_VALUE);
-		root.getChildren().add(s);
+			Piece s = new Piece((int)who.getTranslateX() + 25, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , Color.BLACK,0,0);
+			s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
+			root.getChildren().add(s);
 		}
 	}
 	
@@ -384,6 +465,7 @@ public class Main extends Application {
 		final String type;
 		Rectangle border;
 		Rectangle indication;
+		piece.Piece.Direction direction;
 		int r;
 		int c;
 		Piece(int x, int y, int w, int h, String type, Color color, int r, int c)
@@ -392,6 +474,7 @@ public class Main extends Application {
 			indication.setTranslateY(this.getTranslateY()-25);
 			border = new Rectangle(w,h,color);
 			getChildren().addAll(border);
+			direction = controller.getSquarePiece(r, c).getDirection();
 			if(type.equals("tankOne") || type.equals("tankTwo"))
 			{
 				getChildren().add(indication);
@@ -426,28 +509,37 @@ public class Main extends Application {
 		void moveLeft() {
 			if(type.equals("tankOne") || type.equals("tankTwo"))
 				setTranslateX(getTranslateX() - (2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else
-				setTranslateY(getTranslateY() - 2.5);
+			else if(type.equals("tankOneBullet"))
+				setTranslateX(getTranslateX() - 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if(type.equals("tankTwoBullet"))
+				setTranslateX(getTranslateX() - 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
 		void moveRight()
 		{
 			if(type.equals("tankOne") || type.equals("tankTwo"))
 				setTranslateX(getTranslateX() +(2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else
-				setTranslateX(getTranslateX() + 2.5);
+			else if(type.equals("tankOneBullet"))
+				setTranslateX(getTranslateX() + 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if(type.equals("tankTwoBullet"))
+				setTranslateX(getTranslateX() + 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
 		void moveUp() {
 			if(type.equals("tankOne") || type.equals("tankTwo"))
 				setTranslateY(getTranslateY() -(2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else
-				setTranslateY(getTranslateY() - 2.5);
+			else if(type.equals("tankOneBullet"))
+				setTranslateY(getTranslateY() - 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if(type.equals("tankTwoBullet"))
+				setTranslateY(getTranslateY() - 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+				
 		}
 		void moveDown()
 		{
 			if(type.equals("tankOne") || type.equals("tankTwo"))
 				setTranslateY(getTranslateY() + (2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else
-				setTranslateY(getTranslateY() + 2.5);
+			else if(type.equals("tankOneBullet"))
+				setTranslateY(getTranslateY() + 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if(type.equals("tankTwoBullet"))
+				setTranslateY(getTranslateY() + 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
 	}
 	@Override
