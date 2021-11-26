@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 import Controller.Controller;
 import Controller.ControllerImpl;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -23,6 +25,7 @@ import piece.Tank;
 
 
 public class Main extends Application {
+	private static final Integer STARTTIME = 15;
 	private final double BASE_TANK_SPEED = 2.5;
 	private final double BASE_BULLET_SPEED = 7;
 	private Controller controller = new ControllerImpl();
@@ -31,6 +34,7 @@ public class Main extends Application {
 	private Piece tankTwo;
 	private Piece powerUp;
 	private LinkedList<Piece> brickList = new LinkedList<Piece>();
+	private boolean countDownOver = false;
 	private boolean tankOneMoveUp;
 	private boolean tankOneMoveRight;
 	private boolean tankOneMoveDown;
@@ -45,6 +49,9 @@ public class Main extends Application {
 	private double tankOneBulletTimer = 1;
 	private double tankTwoBulletTimer = 1;
 	private Text gameOverText = new Text();
+	private Timeline timeline;
+	private Label timerLabel = new Label();
+	private Integer timeSeconds = 3;
 	
 	public Parent createContent(Stage primaryStage)
 	{
@@ -102,7 +109,11 @@ public class Main extends Application {
 			@Override
 			public void handle(long now)
 			{
-				if(gameOverText.getText().equals(""))
+				if(!countDownOver)
+				{
+						countDownOver = true;
+				}
+				else if(gameOverText.getText().equals(""))
 					update();
 				else
 				{
@@ -447,6 +458,8 @@ public class Main extends Application {
 			
 			if(tankTwo.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
 			{
+				if(!powerUp.dead)
+				{
 				powerUp.dead = true;
 				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
 				{
@@ -465,7 +478,7 @@ public class Main extends Application {
 					break;
 				default:
 					break;
-				
+				}
 				}
 						
 					
@@ -473,6 +486,8 @@ public class Main extends Application {
 			}
 			if(tankOne.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
 			{
+				if(!powerUp.dead)
+				{
 				powerUp.dead = true;
 				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
 				{
@@ -491,6 +506,7 @@ public class Main extends Application {
 					break;
 				default:
 					break;
+				}
 				}
 			}
 			
@@ -633,6 +649,8 @@ public class Main extends Application {
 		primaryStage.setMinWidth(1000);
 		primaryStage.setHeight(1000);
 		primaryStage.setWidth(1000);
+		primaryStage.setTitle("Tanks 😎");
+		
 		scene.setOnKeyPressed(e -> {
 			switch(e.getCode())
 			{
