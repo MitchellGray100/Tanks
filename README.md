@@ -13,19 +13,19 @@ bricks that spawn in the middle of the map. These bricks are randomly generated 
 makes sure there is always a way to get to the other tank.
 
 Shows a map with the Wheel powerup.</br>
-![Image of a map with Wheel powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageOne.png)
+![Image of a map with Wheel powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageOne.PNG)
 
 Shows a map with the Rocket powerup.</br>
-![Image of a map with Rocket powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageTwo.png)
+![Image of a map with Rocket powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageTwo.PNG)
 
 Shows a map with the Triple Canon powerup.</br>
-![Image of a map with Triple Canon powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageThree.png)
+![Image of a map with Triple Canon powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageThree.PNG)
 
 Shows a map with the Shield powerup.</br>
-![Image of a map with Shield powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageFour.png)
+![Image of a map with Shield powerup](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageFour.PNG)
 
 Shows a shielded tank after it got the shield powerup.</br>
-![Image of a tank after getting the shield](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageFive.png)
+![Image of a tank after getting the shield](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageFive.PNG)
 
 Shows the end of a game.</br>
-![Image of a game over screen](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageSix.png)
+![Image of a game over screen](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageSix.PNG)
