@@ -1,5 +1,7 @@
 package application;
 	
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,15 +9,14 @@ import java.util.stream.Collectors;
 import Controller.Controller;
 import Controller.ControllerImpl;
 import javafx.animation.AnimationTimer;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -49,10 +50,14 @@ public class Main extends Application {
 	private double tankOneBulletTimer = 1;
 	private double tankTwoBulletTimer = 1;
 	private Text gameOverText = new Text();
-	private Timeline timeline;
-	private Label timerLabel = new Label();
-	private Integer timeSeconds = 3;
-	
+	private Image tank;
+	private Image bullet;
+	private Image bullets;
+	private Image wheel;
+	private Image rocket;
+	private Image pileOfTires;
+	private Image shield;
+	private Image shieldedTank;
 	public Parent createContent(Stage primaryStage)
 	{
 		gameOverText.setText("");
@@ -71,7 +76,7 @@ public class Main extends Application {
 					switch(controller.getSquarePiece(r, c).getType())
 					{
 					case BRICK:
-						Piece temp = new Piece(r*100,c * 100,100,100, "brick", Color.MAROON,r,c);
+						Piece temp = new Piece(r*100,c * 100,100,100, "brick", pileOfTires,r,c);
 						brickList.add(temp);
 						root.getChildren().add(temp);
 						break;
@@ -84,12 +89,12 @@ public class Main extends Application {
 					case TANK:
 						if(controller.getSquarePiece(r, c).getPlayer() == piece.Piece.Player.ONE)
 						{
-							tankOne = new Piece(r*100,c * 100+50,50,50, "tankOne", Color.GREEN,r,c);
+							tankOne = new Piece(r*100,c * 100+50,50,50, "tankOne", tank,r,c);
 							root.getChildren().add(tankOne);
 						}
 						else
 						{
-							tankTwo = new Piece(r*100+50,c * 100,50,50, "tankTwo", Color.GREEN,r,c);
+							tankTwo = new Piece(r*100+50,c * 100,50,50, "tankTwo", tank,r,c);
 							root.getChildren().add(tankTwo);
 						}
 						break;
@@ -168,7 +173,7 @@ public class Main extends Application {
 						if(((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).hasShield())
 						{
 							((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(false);
-							tankTwo.border.setFill(Color.GREEN);
+							tankTwo.imageView.setImage(tank);
 						}
 						else
 						{
@@ -180,10 +185,12 @@ public class Main extends Application {
 					{
 					case DOWN:
 						s.moveDown();
+
+						s.setRotate(180);
 						break;
 					case LEFT:
 						s.moveLeft();
-						s.setRotate(90);
+						s.setRotate(270);
 						break;
 					case RIGHT:
 						s.moveRight();
@@ -203,7 +210,7 @@ public class Main extends Application {
 						if(((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).hasShield())
 						{
 							((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(false);
-							tankOne.border.setFill(Color.GREEN);
+							tankOne.imageView.setImage(tank);
 						}
 						else
 						{
@@ -224,10 +231,12 @@ public class Main extends Application {
 					{
 					case DOWN:
 						s.moveDown();
+
+						s.setRotate(180);
 						break;
 					case LEFT:
 						s.moveLeft();
-						s.setRotate(90);
+						s.setRotate(270);
 						break;
 					case RIGHT:
 						s.moveRight();
@@ -474,7 +483,7 @@ public class Main extends Application {
 					break;
 				case SHIELD:
 					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(true);
-					tankTwo.border.setFill(Color.SKYBLUE);
+					tankTwo.imageView.setImage(shieldedTank);
 					break;
 				default:
 					break;
@@ -502,7 +511,7 @@ public class Main extends Application {
 					break;
 				case SHIELD:
 					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(true);
-					tankOne.border.setFill(Color.SKYBLUE);
+					tankOne.imageView.setImage(shieldedTank);
 					break;
 				default:
 					break;
@@ -533,7 +542,7 @@ public class Main extends Application {
 			{
 				tankOneBulletTimer=1.4;
 		
-				Piece s = new Piece((int)who.getTranslateX() + 25, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , Color.BLACK,0,0);
+				Piece s = new Piece((int)who.getTranslateX() + 18, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" ,bullet,0,0);
 				s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
 				root.getChildren().add(s);
 			}
@@ -542,7 +551,7 @@ public class Main extends Application {
 		{
 			tankTwoBulletTimer=1.4;
 		
-			Piece s = new Piece((int)who.getTranslateX() + 25, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , Color.BLACK,0,0);
+			Piece s = new Piece((int)who.getTranslateX() + 18, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , bullet,0,0);
 			s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
 			root.getChildren().add(s);
 		}
@@ -551,37 +560,43 @@ public class Main extends Application {
 	public class Piece extends StackPane {
 		boolean dead = false;
 		final String type;
-		Rectangle border;
-		Rectangle indication;
+//		Rectangle border;
+//		Rectangle indication;
+		ImageView imageView;
 		piece.Piece.Direction direction;
 		int r;
 		int c;
-		Piece(int x, int y, int w, int h, String type, Color color, int r, int c)
+		Piece(int x, int y, int w, int h, String type, Image image, int r, int c)
 		{
-			indication = new Rectangle(10,5,Color.BLACK);
-			indication.setTranslateY(this.getTranslateY()-25);
-			border = new Rectangle(w,h,color);
-			getChildren().addAll(border);
+			imageView = new ImageView();
+			imageView.setImage(image);
+//			indication = new Rectangle(10,5,Color.BLACK);
+//			indication.setTranslateY(this.getTranslateY()-25);
+//			border = new Rectangle(w,h,color);
+			getChildren().addAll(imageView);
 			direction = controller.getSquarePiece(r, c).getDirection();
 			if(type.equals("tankOne") || type.equals("tankTwo"))
 			{
-				getChildren().add(indication);
+				
+				imageView.setImage(tank);
 			}
 			if(type.equals("powerup"))
 			{
+				imageView.setScaleX(2);
+				imageView.setScaleY(2);
 				switch(((PowerUp)controller.getSquarePiece(r, c)).getPowerUpType())
 				{
 				case FASTBULLET:
-					border.setFill(Color.GOLD);
+					imageView.setImage(rocket);
 					break;
 				case FASTSHOOT:
-					border.setFill(Color.RED);
+					imageView.setImage(bullets);
 					break;
 				case FASTSPEED:
-					border.setFill(Color.LIME);
+					imageView.setImage(wheel);
 					break;
 				case SHIELD:
-					border.setFill(Color.SKYBLUE);
+					imageView.setImage(shield);
 					break;
 				default:
 					break;
@@ -631,9 +646,16 @@ public class Main extends Application {
 		}
 	}
 	@Override
-	public void start(Stage primaryStage) {
-
-		
+	public void start(Stage primaryStage) throws FileNotFoundException {
+		pileOfTires = new Image(new FileInputStream("src/images/PileOfTires.png"));
+		bullet = new Image(new FileInputStream("src/images/Bullet.png"));
+		bullets = new Image(new FileInputStream("src/images/Bullets.png"));
+		rocket = new Image(new FileInputStream("src/images/Rocket.png"));
+		shield = new Image(new FileInputStream("src/images/Shield.png"));
+		wheel = new Image(new FileInputStream("src/images/Wheel.png"));
+		tank = new Image(new FileInputStream("src/images/Tank.png"));
+		shieldedTank = new Image(new FileInputStream("src/images/ShieldedTank.png"));
+		primaryStage.getIcons().add(tank);
 		//blackKnightImage = new Image(new FileInputStream("src/Black Knight.png"));
 		//primaryStage.getIcons().add(blackKnightImage);
 		
