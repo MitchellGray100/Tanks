@@ -14,6 +14,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import piece.PowerUp;
 import piece.Tank;
@@ -25,8 +28,6 @@ public class Main extends Application {
 	private Piece tankOne;
 	private Piece tankTwo;
 	private Piece powerUp;
-	private boolean tankOneCollision = false;
-	private boolean tankTwoCollision = false;
 	private LinkedList<Piece> brickList = new LinkedList<Piece>();
 	private boolean tankOneMoveUp;
 	private boolean tankOneMoveRight;
@@ -41,9 +42,17 @@ public class Main extends Application {
 	private double t = 0;
 	private double tankOneBulletTimer = 1;
 	private double tankTwoBulletTimer = 1;
+	private Text gameOverText = new Text();
+	
 	public Parent createContent(Stage primaryStage)
 	{
-		root.setPrefSize(1000, 1000);
+		gameOverText.setText("");
+		gameOverText.setTextAlignment(TextAlignment.CENTER);
+		gameOverText.setFont(new Font(50));
+		gameOverText.setFill(Color.RED);
+		gameOverText.setStroke(Color.BLACK);
+		gameOverText.setTranslateX(350);
+		gameOverText.setTranslateY(500);
 		for(int r = 0; r < 10; r++)
 		{
 			for(int c = 0; c < 10; c++)
@@ -82,6 +91,10 @@ public class Main extends Application {
 				}
 			}
 		}
+
+		
+		root.setPrefSize(1000, 1000);
+		
 		AnimationTimer timer = new AnimationTimer()
 		{
 			@Override
@@ -91,6 +104,7 @@ public class Main extends Application {
 			}
 		};
 		timer.start();
+		
 		return root;
 	}
 	
@@ -101,7 +115,24 @@ public class Main extends Application {
 	private void update()
 	{	
 			t+=.016;
-			pieces().forEach(s -> {
+			if(tankTwo.dead || tankOne.dead)
+			{
+				if(!root.getChildren().contains(gameOverText))
+					root.getChildren().add(gameOverText);
+				if(tankTwo.dead)
+				{
+					
+					gameOverText.setText("Tank One Won!");
+				}
+				else
+				{
+					gameOverText.setText("Tank Two Won!");
+				}
+			}
+			if(!tankTwo.dead && !tankOne.dead)
+			{	
+				pieces().forEach(s -> {
+				
 				switch(s.type)
 				{
 				case "tankOneBullet":
@@ -191,7 +222,7 @@ public class Main extends Application {
 					}
 					break;
 				case "tankOne":
-					tankOneBulletTimer-=.01;
+					tankOneBulletTimer-=.01 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getShootSpeedMultiplier();
 					if(tankOneBulletTimer < 0)
 					{
 						tankOneBulletTimer = 0;
@@ -297,7 +328,7 @@ public class Main extends Application {
 						}
 					break;
 				case "tankTwo":
-					tankTwoBulletTimer-=.01;
+					tankTwoBulletTimer-=.01 *((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getShootSpeedMultiplier();
 					if(tankTwoBulletTimer < 0)
 					{
 						tankTwoBulletTimer = 0;
@@ -403,7 +434,7 @@ public class Main extends Application {
 					break;
 					
 				}
-			});
+			});}
 			
 			if(tankTwo.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
 			{
@@ -421,7 +452,7 @@ public class Main extends Application {
 					break;
 				case SHIELD:
 					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(true);
-					tankTwo.border.setFill(Color.ORANGE);
+					tankTwo.border.setFill(Color.SKYBLUE);
 					break;
 				default:
 					break;
@@ -447,7 +478,7 @@ public class Main extends Application {
 					break;
 				case SHIELD:
 					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(true);
-					tankOne.border.setFill(Color.ORANGE);
+					tankOne.border.setFill(Color.SKYBLUE);
 					break;
 				default:
 					break;
@@ -456,12 +487,13 @@ public class Main extends Application {
 			
 			
 			
-			
-			root.getChildren().removeIf(n -> {
-				Piece s = (Piece) n;
-				return s.dead;
-			});
-			
+			if(gameOverText.getText().equals(""))
+			{
+				root.getChildren().removeIf(n -> {
+					Piece s = (Piece) n;
+					return s.dead;
+				});
+			}
 			if(t > 2) {
 				t = 0;
 			}
@@ -470,9 +502,20 @@ public class Main extends Application {
 	
 	private void shoot(Piece who)
 	{
-		if(tankOneBulletTimer < 1)
+		if(who.type.equals("tankOne"))
 		{
-			tankOneBulletTimer+=1.4;
+			if(tankOneBulletTimer < 1)
+			{
+				tankOneBulletTimer=1.4;
+		
+				Piece s = new Piece((int)who.getTranslateX() + 25, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , Color.BLACK,0,0);
+				s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
+				root.getChildren().add(s);
+			}
+		}
+		else if(tankTwoBulletTimer < 1)
+		{
+			tankTwoBulletTimer=1.4;
 		
 			Piece s = new Piece((int)who.getTranslateX() + 25, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , Color.BLACK,0,0);
 			s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
@@ -575,12 +618,12 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		//primaryStage.setScene(titleScene);
-//		primaryStage.setMaxHeight(1000);
-//		primaryStage.setMaxWidth(1000);
-//		primaryStage.setMinHeight(1000);
-//		primaryStage.setMinWidth(1000);
-//		primaryStage.setHeight(1000);
-//		primaryStage.setWidth(1000);
+		primaryStage.setMaxHeight(1000);
+		primaryStage.setMaxWidth(1000);
+		primaryStage.setMinHeight(1000);
+		primaryStage.setMinWidth(1000);
+		primaryStage.setHeight(1000);
+		primaryStage.setWidth(1000);
 		scene.setOnKeyPressed(e -> {
 			switch(e.getCode())
 			{
@@ -652,6 +695,7 @@ public class Main extends Application {
 			
 			}
 		});
+		
 		
 	}
 	

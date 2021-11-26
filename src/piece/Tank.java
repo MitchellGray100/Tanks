@@ -13,6 +13,7 @@ public class Tank extends AbstractPiece{
 		super(Type.TANK, piecePlayer);
 		setBulletSpeedMultiplier(1);
 		setTankSpeedMultiplier(1);
+		setShootSpeedMultiplier(1);
 		if(piecePlayer == Player.ONE)
 		{
 			setDirection(Direction.UP);
