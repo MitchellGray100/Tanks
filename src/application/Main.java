@@ -23,6 +23,8 @@ import piece.Tank;
 
 
 public class Main extends Application {
+	private final double BASE_TANK_SPEED = 2.5;
+	private final double BASE_BULLET_SPEED = 7;
 	private Controller controller = new ControllerImpl();
 	private Pane root = new Pane();
 	private Piece tankOne;
@@ -100,10 +102,17 @@ public class Main extends Application {
 			@Override
 			public void handle(long now)
 			{
-				update();
+				if(gameOverText.getText().equals(""))
+					update();
+				else
+				{
+
+					stop();
+				}
 			}
 		};
 		timer.start();
+		
 		
 		return root;
 	}
@@ -571,38 +580,38 @@ public class Main extends Application {
 		}
 		void moveLeft() {
 			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateX(getTranslateX() - (2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+				setTranslateX(getTranslateX() - (BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 			else if(type.equals("tankOneBullet"))
-				setTranslateX(getTranslateX() - 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+				setTranslateX(getTranslateX() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
 			else if(type.equals("tankTwoBullet"))
-				setTranslateX(getTranslateX() - 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+				setTranslateX(getTranslateX() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
 		void moveRight()
 		{
 			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateX(getTranslateX() +(2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+				setTranslateX(getTranslateX() +(BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 			else if(type.equals("tankOneBullet"))
-				setTranslateX(getTranslateX() + 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+				setTranslateX(getTranslateX() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
 			else if(type.equals("tankTwoBullet"))
-				setTranslateX(getTranslateX() + 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+				setTranslateX(getTranslateX() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
 		void moveUp() {
 			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateY(getTranslateY() -(2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+				setTranslateY(getTranslateY() -(BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 			else if(type.equals("tankOneBullet"))
-				setTranslateY(getTranslateY() - 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+				setTranslateY(getTranslateY() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
 			else if(type.equals("tankTwoBullet"))
-				setTranslateY(getTranslateY() - 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+				setTranslateY(getTranslateY() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 				
 		}
 		void moveDown()
 		{
 			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateY(getTranslateY() + (2.5 * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+				setTranslateY(getTranslateY() + (BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
 			else if(type.equals("tankOneBullet"))
-				setTranslateY(getTranslateY() + 7 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+				setTranslateY(getTranslateY() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
 			else if(type.equals("tankTwoBullet"))
-				setTranslateY(getTranslateY() + 7 * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+				setTranslateY(getTranslateY() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
 	}
 	@Override
@@ -715,6 +724,7 @@ public class Main extends Application {
 					brickList = new LinkedList<Piece>();
 					gameOverText.setText("");
 					scene.setRoot((createContent(primaryStage)));
+					
 					
 					
 					break;
