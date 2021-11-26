@@ -49,10 +49,10 @@ public class Main extends Application {
 		gameOverText.setText("");
 		gameOverText.setTextAlignment(TextAlignment.CENTER);
 		gameOverText.setFont(new Font(50));
-		gameOverText.setFill(Color.RED);
+		gameOverText.setFill(Color.YELLOW);
 		gameOverText.setStroke(Color.BLACK);
-		gameOverText.setTranslateX(350);
-		gameOverText.setTranslateY(500);
+		gameOverText.setTranslateX(300);
+		gameOverText.setTranslateY(450);
 		for(int r = 0; r < 10; r++)
 		{
 			for(int c = 0; c < 10; c++)
@@ -122,11 +122,11 @@ public class Main extends Application {
 				if(tankTwo.dead)
 				{
 					
-					gameOverText.setText("Tank One Won!");
+					gameOverText.setText("Tank One Won!\nPress SPACE to restart");
 				}
 				else
 				{
-					gameOverText.setText("Tank Two Won!");
+					gameOverText.setText("Tank Two Won!\nPress SPACE to restart");
 				}
 			}
 			if(!tankTwo.dead && !tankOne.dead)
@@ -613,7 +613,7 @@ public class Main extends Application {
 		//primaryStage.getIcons().add(blackKnightImage);
 		
 		//titleScene = new Scene(createTitleContent(primaryStage));
-
+		
 		Scene scene = new Scene(createContent(primaryStage));
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -692,7 +692,33 @@ public class Main extends Application {
 			case N:
 				tankTwoShoot = false;
 				break;
-			
+			case SPACE:
+				if(tankOne.dead || tankTwo.dead)
+				{
+					tankOne.dead = false;
+					tankTwo.dead = false;
+					tankOneMoveUp = false;
+					tankOneMoveRight = false;
+					tankOneMoveDown = false;
+					tankOneMoveLeft = false;
+					tankTwoMoveUp = false;
+					tankTwoMoveRight = false;
+					tankTwoMoveDown = false;
+					tankTwoMoveLeft = false;
+					tankOneShoot = false;
+					tankTwoShoot = false;
+					t = 0;
+					tankOneBulletTimer = 1;
+					tankTwoBulletTimer = 1;
+					root = new Pane();
+					controller = new ControllerImpl();
+					brickList = new LinkedList<Piece>();
+					gameOverText.setText("");
+					scene.setRoot((createContent(primaryStage)));
+					
+					
+					break;
+				}
 			}
 		});
 		
