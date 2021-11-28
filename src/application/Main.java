@@ -729,22 +729,27 @@ public class Main extends Application {
 				tankOneMoveDown = true;
 				break;
 			case J:
-				tankTwoMoveLeft = true;
+				if(twoPlayers)
+					tankTwoMoveLeft = true;
 				break;
 			case L:
-				tankTwoMoveRight = true;
+				if(twoPlayers)
+					tankTwoMoveRight = true;
 				break;
 			case I:
-				tankTwoMoveUp = true;
+				if(twoPlayers)
+					tankTwoMoveUp = true;
 				break;
 			case K:
-				tankTwoMoveDown = true;
+				if(twoPlayers)
+					tankTwoMoveDown = true;
 				break;
 			case C:
 				tankOneShoot = true;
 				break;
 			case N:
-				tankTwoShoot = true;
+				if(twoPlayers)
+					tankTwoShoot = true;
 				break;
 			}
 		});
