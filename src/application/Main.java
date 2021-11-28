@@ -12,6 +12,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -30,6 +31,7 @@ public class Main extends Application {
 	private final double BASE_TANK_SPEED = 2.5;
 	private final double BASE_BULLET_SPEED = 7;
 	private Controller controller = new ControllerImpl();
+	Scene scene;
 	private Pane root = new Pane();
 	private Piece tankOne;
 	private Piece tankTwo;
@@ -46,6 +48,7 @@ public class Main extends Application {
 	private boolean tankTwoMoveLeft;
 	private boolean tankOneShoot;
 	private boolean tankTwoShoot;
+	private boolean twoPlayers;
 	private double t = 0;
 	private double tankOneBulletTimer = 1;
 	private double tankTwoBulletTimer = 1;
@@ -58,6 +61,42 @@ public class Main extends Application {
 	private Image pileOfTires;
 	private Image shield;
 	private Image shieldedTank;
+	private Image titleScreenNoButton;
+	
+	
+	public Parent createTitleScene(Stage primaryStage)
+	{
+		Pane titleScreen = new Pane();
+		ImageView titleScreenImage = new ImageView(titleScreenNoButton);
+		TitleButton titleButton = new TitleButton(0, primaryStage);
+		titleButton.setTranslateX(500);
+		titleButton.setTranslateY(600);
+		titleButton.setText("Two Players");
+		titleScreen.getChildren().addAll(titleScreenImage,titleButton);
+		return titleScreen;
+	}
+	
+	private class TitleButton extends Button {
+		int button;
+
+		public TitleButton(int button, Stage primaryStage) {
+			this.setFont(new Font(72));
+			this.button = button;
+			this.setStyle("-fx-focus-color: #093f03;");
+			this.setOnMouseClicked(event -> {
+				if (button == 0) {
+					twoPlayers = true;
+				} else if (button == 1) {
+					twoPlayers = false;
+				}
+				
+				scene.setRoot(createContent(primaryStage));
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			});
+		}
+	}
+	
 	public Parent createContent(Stage primaryStage)
 	{
 		gameOverText.setText("");
@@ -647,6 +686,7 @@ public class Main extends Application {
 	}
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
+		titleScreenNoButton = new Image(new FileInputStream("src/images/TitleScreenNoButton.png"));
 		pileOfTires = new Image(new FileInputStream("src/images/PileOfTires.png"));
 		bullet = new Image(new FileInputStream("src/images/Bullet.png"));
 		bullets = new Image(new FileInputStream("src/images/Bullets.png"));
@@ -661,7 +701,7 @@ public class Main extends Application {
 		
 		//titleScene = new Scene(createTitleContent(primaryStage));
 		
-		Scene scene = new Scene(createContent(primaryStage));
+		scene = new Scene(createTitleScene(primaryStage));
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		//primaryStage.setScene(titleScene);
