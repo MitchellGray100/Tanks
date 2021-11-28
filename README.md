@@ -32,3 +32,9 @@ Shows a shielded tank after it got the shield powerup.</br>
 
 Shows the end of a game.</br>
 ![Image of a game over screen](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageSix.PNG)
+
+Full Game with Shield PowerUp.</br>
+![GIF of Full Game with Shield PowerUp](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ShieldGIF.gif)
+
+Full Game with Wheel PowerUp.</br>
+![GIF of Full Game with Wheel PowerUp](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/WheelGIF.gif)
