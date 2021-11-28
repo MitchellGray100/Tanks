@@ -1,5 +1,6 @@
 package application;
 	
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
@@ -20,6 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -74,6 +77,23 @@ public class Main extends Application {
 	private String gifSelector;
 	private AnimationTimer animationTimer;
 	private Timer gifTimer;
+	private Media powerUpSound;
+	private Media tankShootSound;
+	private Media tankExplosionSound;
+	private Media musicSound;
+	private Media countDownLowSound;
+	private Media countDownHighSound;
+	private Media buttonSound;
+	private MediaPlayer powerUpPlayer;
+	private MediaPlayer tankOneShootPlayer;
+	private MediaPlayer tankTwoShootPlayer;
+	private MediaPlayer tankExplosionPlayer;
+	private MediaPlayer musicPlayer;
+	private MediaPlayer countDownLowPlayer;
+	private MediaPlayer countDownHighPlayer;
+	private MediaPlayer buttonPlayer;
+	
+	
 	public Parent createTitleScene(Stage primaryStage)
 	{
 		Pane titleScreen = new Pane();
@@ -97,6 +117,9 @@ public class Main extends Application {
 			this.button = button;
 			this.setStyle("-fx-focus-color: #093f03;");
 			this.setOnMouseClicked(event -> {
+				buttonPlayer.stop();
+				buttonPlayer.setMute(false);
+				buttonPlayer.play();
 				onTitleScreen = false;
 				if (button == 0) {
 					twoPlayers = true;
@@ -107,6 +130,25 @@ public class Main extends Application {
 				scene.setRoot(createContent(primaryStage));
 				primaryStage.setScene(scene);
 				primaryStage.show();
+			});
+			this.setOnKeyReleased(event -> {
+				switch(event.getCode())
+				{
+					case SPACE:
+						buttonPlayer.stop();
+						buttonPlayer.setMute(false);
+						buttonPlayer.play();
+						onTitleScreen = false;
+						if (button == 0) {
+							twoPlayers = true;
+						} else if (button == 1) {
+							twoPlayers = false;
+						}
+						
+						scene.setRoot(createContent(primaryStage));
+						primaryStage.setScene(scene);
+						primaryStage.show();
+				}
 			});
 		}
 	}
@@ -120,6 +162,8 @@ public class Main extends Application {
 		gameOverText.setStroke(Color.BLACK);
 		gameOverText.setTranslateX(300);
 		gameOverText.setTranslateY(450);
+		
+		MediaPlayer tempSound = new MediaPlayer(countDownLowSound);
 		for(int r = 0; r < 10; r++)
 		{
 			for(int c = 0; c < 10; c++)
@@ -168,11 +212,15 @@ public class Main extends Application {
 		gifView.setScaleX(4);
 		gifView.setScaleY(4);
 		gifTimer = new Timer();
+		tempSound.play();
 		TimerTask playAnimation2 = new TimerTask()
 			{
 				@Override
 				public void run() {
 					gifView.setImage(gif2);
+					tempSound.stop();
+					tempSound.play();
+					
 				}
 		
 			};
@@ -180,7 +228,10 @@ public class Main extends Application {
 		{
 			@Override
 			public void run() {
+				countDownHighPlayer.stop();
 				gifView.setImage(gif1);
+				tempSound.stop();
+				tempSound.play();
 			}
 		};
 				
@@ -189,8 +240,17 @@ public class Main extends Application {
 
 			@Override
 			public void run() {
+				tempSound.stop();
 				gifView.setImage(null);
+				countDownHighPlayer.play();
 				startGameBoolean = true;
+				powerUpPlayer.stop();
+				countDownLowPlayer.stop();
+				powerUpPlayer.setMute(false);
+				countDownLowPlayer.setMute(false);
+				countDownHighPlayer.setMute(false);
+
+				tempSound.dispose();
 				
 			}
 			
@@ -230,7 +290,6 @@ public class Main extends Application {
 		animationTimer.start();
 		
 		
-		
 		return root;
 	}
 	
@@ -240,6 +299,7 @@ public class Main extends Application {
 	
 	private void update()
 	{	
+		musicPlayer.play();
 			t+=.016;
 			if(tankTwo.dead || tankOne.dead)
 			{
@@ -278,6 +338,7 @@ public class Main extends Application {
 						}
 						else
 						{
+							tankExplosionPlayer.play();
 							tankTwo.dead = true;
 						}
 						s.dead = true;
@@ -315,6 +376,7 @@ public class Main extends Application {
 						}
 						else
 						{
+							tankExplosionPlayer.play();
 							tankOne.dead = true;
 						}
 						s.dead = true;
@@ -570,6 +632,7 @@ public class Main extends Application {
 			{
 				if(!powerUp.dead)
 				{
+				powerUpPlayer.play();
 				powerUp.dead = true;
 				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
 				{
@@ -598,6 +661,7 @@ public class Main extends Application {
 			{
 				if(!powerUp.dead)
 				{
+				powerUpPlayer.play();
 				powerUp.dead = true;
 				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
 				{
@@ -617,6 +681,7 @@ public class Main extends Application {
 				default:
 					break;
 				}
+
 				}
 			}
 			
@@ -641,6 +706,8 @@ public class Main extends Application {
 		{
 			if(tankOneBulletTimer < 1)
 			{
+				tankOneShootPlayer.stop();
+				tankOneShootPlayer.play();
 				tankOneBulletTimer=1.4;
 		
 				Piece s = new Piece((int)who.getTranslateX() + 18, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" ,bullet,0,0);
@@ -650,12 +717,25 @@ public class Main extends Application {
 		}
 		else if(tankTwoBulletTimer < 1)
 		{
+			tankTwoShootPlayer.stop();
+			tankTwoShootPlayer.play();
 			tankTwoBulletTimer=1.4;
 		
 			Piece s = new Piece((int)who.getTranslateX() + 18, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , bullet,0,0);
 			s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
 			root.getChildren().add(s);
 		}
+		
+		TimerTask timerTask = new TimerTask()
+				{
+
+					@Override
+					public void run() {
+						
+						
+					}
+			
+				};
 	}
 	
 	public class Piece extends StackPane {
@@ -761,6 +841,38 @@ public class Main extends Application {
 		gif3 = new Image(new FileInputStream("src/images/3.gif"));
 		gif2 = new Image(new FileInputStream("src/images/2.gif"));
 		gif1 = new Image(new FileInputStream("src/images/1.gif"));
+		powerUpSound = new Media(new File("src/images/PowerUpSound.mp3").toURI().toString());
+		tankExplosionSound = new Media(new File("src/images/TankExplosion.mp3").toURI().toString());
+		tankShootSound = new Media(new File("src/images/TankShoot.mp3").toURI().toString());
+		musicSound = new Media(new File("src/images/BlueSky.mp3").toURI().toString());
+		countDownLowSound = new Media(new File("src/images/CountDownLow.mp3").toURI().toString());
+		countDownHighSound = new Media(new File("src/images/CountDownHigh.mp3").toURI().toString());
+		buttonSound = new Media(new File("src/images/Button.mp3").toURI().toString());
+		root.setCache(true);
+	
+		powerUpPlayer = new MediaPlayer(powerUpSound);
+		tankExplosionPlayer = new MediaPlayer(tankExplosionSound);
+		tankOneShootPlayer = new MediaPlayer(tankShootSound);
+		tankTwoShootPlayer = new MediaPlayer(tankShootSound);
+		musicPlayer = new MediaPlayer(musicSound);
+		musicPlayer.setVolume(.5);
+		countDownLowPlayer = new MediaPlayer(countDownLowSound);
+		countDownHighPlayer = new MediaPlayer(countDownHighSound);
+		buttonPlayer = new MediaPlayer(buttonSound);
+		powerUpPlayer.play();
+		buttonPlayer.play();
+		countDownLowPlayer.play();
+		countDownHighPlayer.play();
+		powerUpPlayer.setMute(true);
+		buttonPlayer.setMute(true);
+		countDownLowPlayer.setMute(true);
+		countDownHighPlayer.setMute(true);
+		 musicPlayer.setOnEndOfMedia(new Runnable() {
+		       public void run() {
+		         musicPlayer.stop();
+		         musicPlayer.play();
+		       }
+		   });
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.getIcons().add(tank);
 		//blackKnightImage = new Image(new FileInputStream("src/Black Knight.png"));
@@ -864,6 +976,13 @@ public class Main extends Application {
 			case SPACE:
 				if(tankOne.dead || tankTwo.dead)
 				{
+
+					powerUpPlayer.stop();
+					tankExplosionPlayer.stop();
+					tankOneShootPlayer.stop();
+					tankTwoShootPlayer.stop();
+					countDownLowPlayer.stop();
+					countDownHighPlayer.stop();
 					tankOne.dead = false;
 					tankTwo.dead = false;
 					tankOneMoveUp = false;
@@ -880,19 +999,26 @@ public class Main extends Application {
 					t = 0;
 					tankOneBulletTimer = 1;
 					tankTwoBulletTimer = 1;
-					root = new Pane();
-					controller = new ControllerImpl();
-					brickList = new LinkedList<Piece>();
-					gameOverText.setText("");
 					gifTimer.cancel();
 					animationTimer.stop();
+					root = new Pane();
+					gameOverText.setText("");
+					controller = new ControllerImpl();
+					brickList = new LinkedList<Piece>();
 					scene.setRoot((createContent(primaryStage)));
 					
 					
 					break;
 				}
 			case ESCAPE:
-				
+
+				tankExplosionPlayer.stop();
+				powerUpPlayer.stop();
+				tankOneShootPlayer.stop();
+				tankTwoShootPlayer.stop();
+				countDownLowPlayer.stop();
+				countDownHighPlayer.stop();
+				buttonPlayer.stop();
 				if(onTitleScreen)
 				{
 					primaryStage.close();
