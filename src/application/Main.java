@@ -4,12 +4,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 import Controller.Controller;
 import Controller.ControllerImpl;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import piece.PowerUp;
 import piece.Tank;
 
@@ -49,6 +53,8 @@ public class Main extends Application {
 	private boolean tankOneShoot;
 	private boolean tankTwoShoot;
 	private boolean twoPlayers;
+	private boolean startGameBoolean = false;
+	private boolean onTitleScreen = true;
 	private double t = 0;
 	private double tankOneBulletTimer = 1;
 	private double tankTwoBulletTimer = 1;
@@ -62,8 +68,12 @@ public class Main extends Application {
 	private Image shield;
 	private Image shieldedTank;
 	private Image titleScreenNoButton;
-	
-	
+	private Image gif3;
+	private Image gif2;
+	private Image gif1;
+	private String gifSelector;
+	private AnimationTimer animationTimer;
+	private Timer gifTimer;
 	public Parent createTitleScene(Stage primaryStage)
 	{
 		Pane titleScreen = new Pane();
@@ -72,6 +82,9 @@ public class Main extends Application {
 		titleButton.setTranslateX(500);
 		titleButton.setTranslateY(600);
 		titleButton.setText("Two Players");
+		
+		
+		
 		titleScreen.getChildren().addAll(titleScreenImage,titleButton);
 		return titleScreen;
 	}
@@ -84,6 +97,7 @@ public class Main extends Application {
 			this.button = button;
 			this.setStyle("-fx-focus-color: #093f03;");
 			this.setOnMouseClicked(event -> {
+				onTitleScreen = false;
 				if (button == 0) {
 					twoPlayers = true;
 				} else if (button == 1) {
@@ -148,17 +162,64 @@ public class Main extends Application {
 		
 		root.setPrefSize(1000, 1000);
 		
-		AnimationTimer timer = new AnimationTimer()
+		ImageView gifView = new ImageView(gif3);
+		gifView.setTranslateX(400);
+		gifView.setTranslateY(400);
+		gifView.setScaleX(4);
+		gifView.setScaleY(4);
+		gifTimer = new Timer();
+		TimerTask playAnimation2 = new TimerTask()
+			{
+				@Override
+				public void run() {
+					gifView.setImage(gif2);
+				}
+		
+			};
+		TimerTask playAnimation1 = new TimerTask()
+		{
+			@Override
+			public void run() {
+				gifView.setImage(gif1);
+			}
+		};
+				
+		TimerTask startGame = new TimerTask()
+		{
+
+			@Override
+			public void run() {
+				gifView.setImage(null);
+				startGameBoolean = true;
+				
+			}
+			
+		};
+		tankTwo.setRotate(180);
+		root.getChildren().add(gifView);
+		gifTimer.schedule(playAnimation2, 1000);
+		gifTimer.schedule(playAnimation1, 2000);
+		gifTimer.schedule(startGame, 3000
+				);
+		
+		
+		animationTimer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
 			{
-				if(!countDownOver)
+				if(gameOverText.getText().equals(""))
 				{
-						countDownOver = true;
+					if(startGameBoolean)
+					{
+						if(root.getChildren().contains(gifView))
+						{
+							root.getChildren().remove(gifView);
+						}
+					
+						update();
+					}
 				}
-				else if(gameOverText.getText().equals(""))
-					update();
 				else
 				{
 
@@ -166,7 +227,8 @@ public class Main extends Application {
 				}
 			}
 		};
-		timer.start();
+		animationTimer.start();
+		
 		
 		
 		return root;
@@ -686,6 +748,7 @@ public class Main extends Application {
 	}
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
+		
 		titleScreenNoButton = new Image(new FileInputStream("src/images/TitleScreenNoButton.png"));
 		pileOfTires = new Image(new FileInputStream("src/images/PileOfTires.png"));
 		bullet = new Image(new FileInputStream("src/images/Bullet.png"));
@@ -695,6 +758,10 @@ public class Main extends Application {
 		wheel = new Image(new FileInputStream("src/images/Wheel.png"));
 		tank = new Image(new FileInputStream("src/images/Tank.png"));
 		shieldedTank = new Image(new FileInputStream("src/images/ShieldedTank.png"));
+		gif3 = new Image(new FileInputStream("src/images/3.gif"));
+		gif2 = new Image(new FileInputStream("src/images/2.gif"));
+		gif1 = new Image(new FileInputStream("src/images/1.gif"));
+		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.getIcons().add(tank);
 		//blackKnightImage = new Image(new FileInputStream("src/Black Knight.png"));
 		//primaryStage.getIcons().add(blackKnightImage);
@@ -714,6 +781,7 @@ public class Main extends Application {
 		primaryStage.setTitle("Tanks 😎");
 		
 		scene.setOnKeyPressed(e -> {
+			
 			switch(e.getCode())
 			{
 			case A:
@@ -752,8 +820,10 @@ public class Main extends Application {
 					tankTwoShoot = true;
 				break;
 			}
-		});
+			}
+		);
 		scene.setOnKeyReleased( e-> {
+			
 			switch(e.getCode())
 			{
 			case A:
@@ -806,6 +876,7 @@ public class Main extends Application {
 					tankTwoMoveLeft = false;
 					tankOneShoot = false;
 					tankTwoShoot = false;
+					startGameBoolean = false;
 					t = 0;
 					tankOneBulletTimer = 1;
 					tankTwoBulletTimer = 1;
@@ -813,13 +884,48 @@ public class Main extends Application {
 					controller = new ControllerImpl();
 					brickList = new LinkedList<Piece>();
 					gameOverText.setText("");
+					gifTimer.cancel();
+					animationTimer.stop();
 					scene.setRoot((createContent(primaryStage)));
-					
 					
 					
 					break;
 				}
+			case ESCAPE:
+				
+				if(onTitleScreen)
+				{
+					primaryStage.close();
+					Platform.exit();
+					System.exit(0);
+				}
+				tankOne.dead = false;
+				tankTwo.dead = false;
+				tankOneMoveUp = false;
+				tankOneMoveRight = false;
+				tankOneMoveDown = false;
+				tankOneMoveLeft = false;
+				tankTwoMoveUp = false;
+				tankTwoMoveRight = false;
+				tankTwoMoveDown = false;
+				tankTwoMoveLeft = false;
+				tankOneShoot = false;
+				tankTwoShoot = false;
+				startGameBoolean = false;
+				t = 0;
+				tankOneBulletTimer = 1;
+				tankTwoBulletTimer = 1;
+				gifTimer.cancel();
+				animationTimer.stop();
+				gameOverText.setText("");
+				root = new Pane();
+				controller = new ControllerImpl();
+				brickList = new LinkedList<Piece>();
+				onTitleScreen = true;
+				scene.setRoot((createTitleScene(primaryStage)));
+				break;
 			}
+			
 		});
 		
 		
