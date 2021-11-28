@@ -331,6 +331,8 @@ public class Main extends Application {
 					}
 					if(s.getBoundsInParent().intersects(tankTwo.getBoundsInParent()))
 					{
+						tankExplosionPlayer.stop();
+						tankExplosionPlayer.play();
 						if(((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).hasShield())
 						{
 							((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(false);
@@ -338,7 +340,6 @@ public class Main extends Application {
 						}
 						else
 						{
-							tankExplosionPlayer.play();
 							tankTwo.dead = true;
 						}
 						s.dead = true;
@@ -369,6 +370,8 @@ public class Main extends Application {
 				case "tankTwoBullet":
 					if(s.getBoundsInParent().intersects(tankOne.getBoundsInParent()))
 					{
+						tankExplosionPlayer.stop();
+						tankExplosionPlayer.play();
 						if(((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).hasShield())
 						{
 							((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(false);
@@ -376,7 +379,6 @@ public class Main extends Application {
 						}
 						else
 						{
-							tankExplosionPlayer.play();
 							tankOne.dead = true;
 						}
 						s.dead = true;
