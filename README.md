@@ -12,6 +12,8 @@ Bricks prevent the player from going through the space they cover. There is the 
 bricks that spawn in the middle of the map. These bricks are randomly generated and make the game have good replay value. The game
 makes sure there is always a way to get to the other tank.
 
+Music Credit: [ParagonX9](https://www.youtube.com/watch?v=QdL18RWUS8E).
+
 Title Screen.</br>
 ![Image of the title screen](https://github.com/MitchellGray100/Tanks/blob/main/src/Images/TitleScreen.png)
 
