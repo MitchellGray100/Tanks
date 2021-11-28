@@ -769,22 +769,27 @@ public class Main extends Application {
 				tankOneMoveDown = false;
 				break;
 			case J:
-				tankTwoMoveLeft = false;
+				if(twoPlayers)
+					tankTwoMoveLeft = false;
 				break;
 			case L:
-				tankTwoMoveRight = false;
+				if(twoPlayers)
+					tankTwoMoveRight = false;
 				break;
 			case I:
-				tankTwoMoveUp = false;
+				if(twoPlayers)
+					tankTwoMoveUp = false;
 				break;
 			case K:
-				tankTwoMoveDown = false;
+				if(twoPlayers)
+					tankTwoMoveDown = false;
 				break;
 			case C:
 				tankOneShoot = false;
 				break;
 			case N:
-				tankTwoShoot = false;
+				if(twoPlayers)
+					tankTwoShoot = false;
 				break;
 			case SPACE:
 				if(tankOne.dead || tankTwo.dead)
