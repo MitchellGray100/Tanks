@@ -1,5 +1,5 @@
 package application;
-	
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,7 +31,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import piece.PowerUp;
 import piece.Tank;
-
 
 public class Main extends Application {
 	private static final Integer STARTTIME = 15;
@@ -92,23 +91,24 @@ public class Main extends Application {
 	private MediaPlayer countDownLowPlayer;
 	private MediaPlayer countDownHighPlayer;
 	private MediaPlayer buttonPlayer;
-	
-	
-	public Parent createTitleScene(Stage primaryStage)
-	{
+
+	public Parent createTitleScene(Stage primaryStage) {
 		Pane titleScreen = new Pane();
 		ImageView titleScreenImage = new ImageView(titleScreenNoButton);
 		TitleButton titleButton = new TitleButton(0, primaryStage);
 		titleButton.setTranslateX(500);
-		titleButton.setTranslateY(600);
+		titleButton.setTranslateY(500);
 		titleButton.setText("Two Players");
-		
-		
-		
-		titleScreen.getChildren().addAll(titleScreenImage,titleButton);
+		TitleButton titleButton2 = new TitleButton(1, primaryStage);
+		titleButton2.setTranslateX(515);
+		titleButton2.setTranslateY(750);
+		titleButton2.setText("One Player");
+		titleButton2.setScaleX(1.08);
+
+		titleScreen.getChildren().addAll(titleScreenImage, titleButton, titleButton2);
 		return titleScreen;
 	}
-	
+
 	private class TitleButton extends Button {
 		int button;
 
@@ -126,35 +126,33 @@ public class Main extends Application {
 				} else if (button == 1) {
 					twoPlayers = false;
 				}
-				
+
 				scene.setRoot(createContent(primaryStage));
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			});
 			this.setOnKeyReleased(event -> {
-				switch(event.getCode())
-				{
-					case SPACE:
-						buttonPlayer.stop();
-						buttonPlayer.setMute(false);
-						buttonPlayer.play();
-						onTitleScreen = false;
-						if (button == 0) {
-							twoPlayers = true;
-						} else if (button == 1) {
-							twoPlayers = false;
-						}
-						
-						scene.setRoot(createContent(primaryStage));
-						primaryStage.setScene(scene);
-						primaryStage.show();
+				switch (event.getCode()) {
+				case SPACE:
+					buttonPlayer.stop();
+					buttonPlayer.setMute(false);
+					buttonPlayer.play();
+					onTitleScreen = false;
+					if (button == 0) {
+						twoPlayers = true;
+					} else if (button == 1) {
+						twoPlayers = false;
+					}
+
+					scene.setRoot(createContent(primaryStage));
+					primaryStage.setScene(scene);
+					primaryStage.show();
 				}
 			});
 		}
 	}
-	
-	public Parent createContent(Stage primaryStage)
-	{
+
+	public Parent createContent(Stage primaryStage) {
 		gameOverText.setText("");
 		gameOverText.setTextAlignment(TextAlignment.CENTER);
 		gameOverText.setFont(new Font(50));
@@ -162,50 +160,42 @@ public class Main extends Application {
 		gameOverText.setStroke(Color.BLACK);
 		gameOverText.setTranslateX(300);
 		gameOverText.setTranslateY(450);
-		
+
 		MediaPlayer tempSound = new MediaPlayer(countDownLowSound);
-		for(int r = 0; r < 10; r++)
-		{
-			for(int c = 0; c < 10; c++)
-			{
-				if(controller.getSquarePiece(r, c) != null)
-				{
-					switch(controller.getSquarePiece(r, c).getType())
-					{
+		for (int r = 0; r < 10; r++) {
+			for (int c = 0; c < 10; c++) {
+				if (controller.getSquarePiece(r, c) != null) {
+					switch (controller.getSquarePiece(r, c).getType()) {
 					case BRICK:
-						Piece temp = new Piece(r*100,c * 100,100,100, "brick", pileOfTires,r,c);
+						Piece temp = new Piece(r * 100, c * 100, 100, 100, "brick", pileOfTires, r, c);
 						brickList.add(temp);
 						root.getChildren().add(temp);
 						break;
 					case BULLET:
 						break;
 					case POWERUP:
-						powerUp = new Piece(r*100+25,c * 100+25,50,50, "powerup", null,r,c);
+						powerUp = new Piece(r * 100 + 25, c * 100 + 25, 50, 50, "powerup", null, r, c);
 						root.getChildren().add(powerUp);
 						break;
 					case TANK:
-						if(controller.getSquarePiece(r, c).getPlayer() == piece.Piece.Player.ONE)
-						{
-							tankOne = new Piece(r*100,c * 100+50,50,50, "tankOne", tank,r,c);
+						if (controller.getSquarePiece(r, c).getPlayer() == piece.Piece.Player.ONE) {
+							tankOne = new Piece(r * 100, c * 100 + 50, 50, 50, "tankOne", tank, r, c);
 							root.getChildren().add(tankOne);
-						}
-						else
-						{
-							tankTwo = new Piece(r*100+50,c * 100,50,50, "tankTwo", tank,r,c);
+						} else {
+							tankTwo = new Piece(r * 100 + 50, c * 100, 50, 50, "tankTwo", tank, r, c);
 							root.getChildren().add(tankTwo);
 						}
 						break;
 					default:
 						break;
-				
+
 					}
 				}
 			}
 		}
 
-		
 		root.setPrefSize(1000, 1000);
-		
+
 		ImageView gifView = new ImageView(gif3);
 		gifView.setTranslateX(400);
 		gifView.setTranslateY(400);
@@ -213,19 +203,17 @@ public class Main extends Application {
 		gifView.setScaleY(4);
 		gifTimer = new Timer();
 		tempSound.play();
-		TimerTask playAnimation2 = new TimerTask()
-			{
-				@Override
-				public void run() {
-					gifView.setImage(gif2);
-					tempSound.stop();
-					tempSound.play();
-					
-				}
-		
-			};
-		TimerTask playAnimation1 = new TimerTask()
-		{
+		TimerTask playAnimation2 = new TimerTask() {
+			@Override
+			public void run() {
+				gifView.setImage(gif2);
+				tempSound.stop();
+				tempSound.play();
+
+			}
+
+		};
+		TimerTask playAnimation1 = new TimerTask() {
 			@Override
 			public void run() {
 				countDownHighPlayer.stop();
@@ -234,9 +222,8 @@ public class Main extends Application {
 				tempSound.play();
 			}
 		};
-				
-		TimerTask startGame = new TimerTask()
-		{
+
+		TimerTask startGame = new TimerTask() {
 
 			@Override
 			public void run() {
@@ -251,101 +238,77 @@ public class Main extends Application {
 				countDownHighPlayer.setMute(false);
 
 				tempSound.dispose();
-				
+
 			}
-			
+
 		};
 		tankTwo.setRotate(180);
 		root.getChildren().add(gifView);
 		gifTimer.schedule(playAnimation2, 1000);
 		gifTimer.schedule(playAnimation1, 2000);
-		gifTimer.schedule(startGame, 3000
-				);
-		
-		
-		animationTimer = new AnimationTimer()
-		{
+		gifTimer.schedule(startGame, 3000);
+
+		animationTimer = new AnimationTimer() {
 			@Override
-			public void handle(long now)
-			{
-				if(gameOverText.getText().equals(""))
-				{
-					if(startGameBoolean)
-					{
-						if(root.getChildren().contains(gifView))
-						{
+			public void handle(long now) {
+				if (gameOverText.getText().equals("")) {
+					if (startGameBoolean) {
+						if (root.getChildren().contains(gifView)) {
 							root.getChildren().remove(gifView);
 						}
-					
+
 						update();
 					}
-				}
-				else
-				{
+				} else {
 
 					stop();
 				}
 			}
 		};
 		animationTimer.start();
-		
-		
+
 		return root;
 	}
-	
+
 	private List<Piece> pieces() {
-		return root.getChildren().stream().map(n -> (Piece)n).collect(Collectors.toList());
+		return root.getChildren().stream().map(n -> (Piece) n).collect(Collectors.toList());
 	}
-	
-	private void update()
-	{	
+
+	private void update() {
 		musicPlayer.play();
-			t+=.016;
-			if(tankTwo.dead || tankOne.dead)
-			{
-				if(!root.getChildren().contains(gameOverText))
-					root.getChildren().add(gameOverText);
-				if(tankTwo.dead)
-				{
-					
-					gameOverText.setText("Tank One Won!\nPress SPACE to restart");
-				}
-				else
-				{
-					gameOverText.setText("Tank Two Won!\nPress SPACE to restart");
-				}
+		t += .016;
+		if (tankTwo.dead || tankOne.dead) {
+			if (!root.getChildren().contains(gameOverText))
+				root.getChildren().add(gameOverText);
+			if (tankTwo.dead) {
+
+				gameOverText.setText("Tank One Won!\nPress SPACE to restart");
+			} else {
+				gameOverText.setText("Tank Two Won!\nPress SPACE to restart");
 			}
-			if(!tankTwo.dead && !tankOne.dead)
-			{	
-				pieces().forEach(s -> {
-				
-				switch(s.type)
-				{
+		}
+		if (!tankTwo.dead && !tankOne.dead) {
+			pieces().forEach(s -> {
+
+				switch (s.type) {
 				case "tankOneBullet":
-					for(Piece piece: brickList)
-					{
-						if(s.getBoundsInParent().intersects(piece.getBoundsInParent()))
-						{
+					for (Piece piece : brickList) {
+						if (s.getBoundsInParent().intersects(piece.getBoundsInParent())) {
 							s.dead = true;
 						}
 					}
-					if(s.getBoundsInParent().intersects(tankTwo.getBoundsInParent()))
-					{
+					if (s.getBoundsInParent().intersects(tankTwo.getBoundsInParent())) {
 						tankExplosionPlayer.stop();
 						tankExplosionPlayer.play();
-						if(((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).hasShield())
-						{
-							((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(false);
+						if (((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).hasShield()) {
+							((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(false);
 							tankTwo.imageView.setImage(tank);
-						}
-						else
-						{
+						} else {
 							tankTwo.dead = true;
 						}
 						s.dead = true;
 					}
-					switch(s.direction)
-					{
+					switch (s.direction) {
 					case DOWN:
 						s.moveDown();
 
@@ -364,36 +327,29 @@ public class Main extends Application {
 						break;
 					default:
 						break;
-					
+
 					}
 					break;
 				case "tankTwoBullet":
-					if(s.getBoundsInParent().intersects(tankOne.getBoundsInParent()))
-					{
+					if (s.getBoundsInParent().intersects(tankOne.getBoundsInParent())) {
 						tankExplosionPlayer.stop();
 						tankExplosionPlayer.play();
-						if(((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).hasShield())
-						{
-							((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(false);
+						if (((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).hasShield()) {
+							((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(false);
 							tankOne.imageView.setImage(tank);
-						}
-						else
-						{
+						} else {
 							tankOne.dead = true;
 						}
 						s.dead = true;
 					}
-					for(Piece piece: brickList)
-					{
-						
-						if(s.getBoundsInParent().intersects(piece.getBoundsInParent()))
-						{
+					for (Piece piece : brickList) {
+
+						if (s.getBoundsInParent().intersects(piece.getBoundsInParent())) {
 							s.dead = true;
 						}
-						
+
 					}
-					switch(s.direction)
-					{
+					switch (s.direction) {
 					case DOWN:
 						s.moveDown();
 
@@ -412,203 +368,199 @@ public class Main extends Application {
 						break;
 					default:
 						break;
-					
+
 					}
 					break;
 				case "tankOne":
-					tankOneBulletTimer-=.01 * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getShootSpeedMultiplier();
-					if(tankOneBulletTimer < 0)
-					{
+					tankOneBulletTimer -= .01
+							* ((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).getShootSpeedMultiplier();
+					if (tankOneBulletTimer < 0) {
 						tankOneBulletTimer = 0;
 					}
-						if(tankOneShoot)
-						{
-							shoot(tankOne);
-						}
-					
-						if(tankOneMoveRight)
-						{
-							if(!tankOneMoveUp && !tankOneMoveDown)
-							{
-								controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.RIGHT);
-								for(Piece piece: brickList)
-								{
-									if(tankOne.getBoundsInParent().intersects(piece.r * 100, piece.c * 100+5, 10, 90))
-									{
-										s.moveLeft();
-									}
-								}
-								s.moveRight();
-							}
-							if(tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX(), tankTwo.getTranslateY()+5, 10, 40))
-							{
-								s.moveLeft();
-							}
-						}
-						if(tankOneMoveLeft)
-						{
-							if(!tankOneMoveUp && !tankOneMoveDown)
-							{
-								controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.LEFT);
-								for(Piece piece: brickList)
-								{
-									if(tankOne.getBoundsInParent().intersects(piece.r * 100+90, piece.c * 100+5, 10, 90))
-									{
-										s.moveRight();
-									}
-								}
-								if(tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX()+40, tankTwo.getTranslateY()+5, 10, 40))
-								{
-									s.moveRight();
-								}
-								s.moveLeft();
-							}
-						}
-						if(tankOneMoveUp)
-						{
-//							if(!tankOneMoveLeft && !tankOneMoveRight)
-							{
-								controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.UP);
-								for(Piece piece: brickList)
-								{
-									if(tankOne.getBoundsInParent().intersects(piece.r * 100+5, piece.c * 100+90, 90, 10))
-									{
-										s.moveDown();
-									}
-								}
-								if(tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX()+5, tankTwo.getTranslateY()+40, 40, 10))
-								{
-									s.moveDown();
-								}
-								s.moveUp();
-							}
-						}
-						if(tankOneMoveDown)
-						{
-//							if(!tankOneMoveLeft && !tankOneMoveRight)
-							{
-								controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.DOWN);
-								for(Piece piece: brickList)
-								{
-									if(tankOne.getBoundsInParent().intersects(piece.r * 100+5, piece.c * 100, 90, 10))
-									{
-										s.moveUp();
-									}
-								}
-								if(tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX()+5, tankTwo.getTranslateY(), 40, 10))
-								{
-									s.moveUp();
-								}
-								s.moveDown();
-							}
-						}
-						switch((controller.getSquarePiece(tankOne.r, tankOne.c)).getDirection())
-						{
-						case DOWN:
-							tankOne.setRotate(180);
-							break;
-						case LEFT:
-							tankOne.setRotate(270);
-							break;
-						case RIGHT:
-							tankOne.setRotate(90);
-							break;
-						case UP:
-							tankOne.setRotate(0);
-							break;
-						default:
-							break;
-						
-						}
-					break;
-				case "tankTwo":
-					tankTwoBulletTimer-=.01 *((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getShootSpeedMultiplier();
-					if(tankTwoBulletTimer < 0)
-					{
-						tankTwoBulletTimer = 0;
+					if (tankOneShoot) {
+						shoot(tankOne);
 					}
-					if(tankTwoShoot)
-					{
-						shoot(tankTwo);
-					}
-					if(tankTwoMoveRight)
-					{
-						if(!tankTwoMoveUp && !tankTwoMoveDown)
-						{
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.RIGHT);
-							for(Piece piece: brickList)
-							{
-								if(tankTwo.getBoundsInParent().intersects(piece.r * 100, piece.c * 100+5, 10, 90))
-								{
+
+					if (tankOneMoveRight) {
+						if (!tankOneMoveUp && !tankOneMoveDown) {
+							controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.RIGHT);
+							for (Piece piece : brickList) {
+								if (tankOne.getBoundsInParent().intersects(piece.r * 100, piece.c * 100 + 5, 10, 90)) {
 									s.moveLeft();
 								}
 							}
-							if(tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX(), tankOne.getTranslateY()+5, 10, 40))
-							{
-								s.moveLeft();
-							}
 							s.moveRight();
 						}
+						if (tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX(), tankTwo.getTranslateY() + 5,
+								10, 40)) {
+							s.moveLeft();
+						}
 					}
-					if(tankTwoMoveLeft)
-					{
-						if(!tankTwoMoveUp && !tankTwoMoveDown)
-						{
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.LEFT);
-							for(Piece piece: brickList)
-							{
-								if(tankTwo.getBoundsInParent().intersects(piece.r * 100+90, piece.c * 100+5, 10, 90))
-								{
+					if (tankOneMoveLeft) {
+						if (!tankOneMoveUp && !tankOneMoveDown) {
+							controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.LEFT);
+							for (Piece piece : brickList) {
+								if (tankOne.getBoundsInParent().intersects(piece.r * 100 + 90, piece.c * 100 + 5, 10,
+										90)) {
 									s.moveRight();
 								}
 							}
-							if(tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX()+40, tankOne.getTranslateY()+5, 10, 40))
-							{
+							if (tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX() + 40,
+									tankTwo.getTranslateY() + 5, 10, 40)) {
 								s.moveRight();
 							}
 							s.moveLeft();
 						}
 					}
-					if(tankTwoMoveUp)
-					{
-//						if(!tankTwoMoveLeft && !tankTwoMoveRight)
+					if (tankOneMoveUp) {
+//							if(!tankOneMoveLeft && !tankOneMoveRight)
 						{
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.UP);
-							for(Piece piece: brickList)
-							{
-								if(tankTwo.getBoundsInParent().intersects(piece.r * 100+5, piece.c * 100+90, 90, 10))
-								{
+							controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.UP);
+							for (Piece piece : brickList) {
+								if (tankOne.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100 + 90, 90,
+										10)) {
 									s.moveDown();
 								}
 							}
-							if(tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX()+5, tankOne.getTranslateY()+40, 40, 10))
-							{
+							if (tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX() + 5,
+									tankTwo.getTranslateY() + 40, 40, 10)) {
 								s.moveDown();
 							}
 							s.moveUp();
 						}
 					}
-					if(tankTwoMoveDown)
-					{
-//						if(!tankTwoMoveLeft && !tankTwoMoveRight)
+					if (tankOneMoveDown) {
+//							if(!tankOneMoveLeft && !tankOneMoveRight)
 						{
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.DOWN);
-							for(Piece piece: brickList)
-							{
-								if(tankTwo.getBoundsInParent().intersects(piece.r * 100+5, piece.c * 100, 90, 10))
-								{
+							controller.getSquarePiece(tankOne.r, tankOne.c).setDirection(piece.Piece.Direction.DOWN);
+							for (Piece piece : brickList) {
+								if (tankOne.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100, 90, 10)) {
 									s.moveUp();
 								}
 							}
-							if(tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX()+5, tankOne.getTranslateY(), 40, 10))
-							{
+							if (tankOne.getBoundsInParent().intersects(tankTwo.getTranslateX() + 5,
+									tankTwo.getTranslateY(), 40, 10)) {
 								s.moveUp();
 							}
 							s.moveDown();
 						}
 					}
-					switch(controller.getSquarePiece(tankTwo.r, tankTwo.c).getDirection())
-					{
+					switch ((controller.getSquarePiece(tankOne.r, tankOne.c)).getDirection()) {
+					case DOWN:
+						tankOne.setRotate(180);
+						break;
+					case LEFT:
+						tankOne.setRotate(270);
+						break;
+					case RIGHT:
+						tankOne.setRotate(90);
+						break;
+					case UP:
+						tankOne.setRotate(0);
+						break;
+					default:
+						break;
+
+					}
+					break;
+				case "tankTwo":
+					tankTwoBulletTimer -= .01
+							* ((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).getShootSpeedMultiplier();
+					if (tankTwoBulletTimer < 0) {
+						tankTwoBulletTimer = 0;
+					}
+					if (tankTwoShoot) {
+						shoot(tankTwo);
+					}
+					if (tankTwoMoveRight) {
+						if (!tankTwoMoveUp && !tankTwoMoveDown) {
+							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.RIGHT);
+							for (Piece piece : brickList) {
+								if (tankTwo.getBoundsInParent().intersects(piece.r * 100, piece.c * 100 + 5, 10, 90)) {
+									s.moveLeft();
+								}
+							}
+							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX(),
+									tankOne.getTranslateY() + 5, 10, 40)) {
+								s.moveLeft();
+							}
+							s.moveRight();
+						}
+					}
+					if (tankTwoMoveLeft) {
+						if (!tankTwoMoveUp && !tankTwoMoveDown) {
+							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.LEFT);
+							for (Piece piece : brickList) {
+								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 90, piece.c * 100 + 5, 10,
+										90)) {
+									s.moveRight();
+								}
+							}
+							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 40,
+									tankOne.getTranslateY() + 5, 10, 40)) {
+								s.moveRight();
+							}
+							s.moveLeft();
+						}
+					}
+					if (tankTwoMoveUp) {
+//						if(!tankTwoMoveLeft && !tankTwoMoveRight)
+						{
+							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.UP);
+							for (Piece piece : brickList) {
+								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100 + 90, 90,
+										10)) {
+									s.moveDown();
+								}
+							}
+							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 5,
+									tankOne.getTranslateY() + 40, 40, 10)) {
+								s.moveDown();
+							}
+							s.moveUp();
+						}
+					}
+					if (tankTwoMoveDown) {
+//						if(!tankTwoMoveLeft && !tankTwoMoveRight)
+						{
+							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.DOWN);
+							for (Piece piece : brickList) {
+								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100, 90, 10)) {
+									s.moveUp();
+								}
+							}
+							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 5,
+									tankOne.getTranslateY(), 40, 10)) {
+								s.moveUp();
+							}
+							s.moveDown();
+						}
+					}
+					if (!twoPlayers) {
+						tankTwoMoveUp = false;
+						tankTwoMoveDown = false;
+						tankTwoMoveLeft = false;
+						tankTwoMoveRight = false;
+						switch (controller.getAIMove(tankTwo.getTranslateX(), tankTwo.getTranslateY(),
+								tankOne.getTranslateX(), tankOne.getTranslateY())) {
+						case UP:
+							tankTwoMoveUp = true;
+							break;
+						case DOWN:
+							tankTwoMoveDown = true;
+							break;
+						case LEFT:
+							tankTwoMoveLeft = true;
+							break;
+						case RIGHT:
+							tankTwoMoveRight = true;
+							break;
+						default:
+							tankTwoMoveUp = true;
+						}
+						shoot(tankTwo);
+					}
+					switch (controller.getSquarePiece(tankTwo.r, tankTwo.c).getDirection()) {
 					case DOWN:
 						tankTwo.setRotate(180);
 						break;
@@ -623,123 +575,108 @@ public class Main extends Application {
 						break;
 					default:
 						break;
-					
+
 					}
 					break;
-					
+
 				}
-			});}
-			
-			if(tankTwo.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
-			{
-				if(!powerUp.dead)
-				{
+			});
+		}
+
+		if (tankTwo.getBoundsInParent().intersects(powerUp.getBoundsInParent())) {
+			if (!powerUp.dead) {
 				powerUpPlayer.play();
 				powerUp.dead = true;
-				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
-				{
+				switch (((PowerUp) controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType()) {
 				case FASTBULLET:
-					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setBulletSpeedMultiplier(1.5);
+					((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).setBulletSpeedMultiplier(1.5);
 					break;
 				case FASTSHOOT:
-					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShootSpeedMultiplier(1.5);
+					((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShootSpeedMultiplier(1.5);
 					break;
 				case FASTSPEED:
-					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setTankSpeedMultiplier(1.5);
+					((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).setTankSpeedMultiplier(1.5);
 					break;
 				case SHIELD:
-					((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(true);
+					((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).setShield(true);
 					tankTwo.imageView.setImage(shieldedTank);
 					break;
 				default:
 					break;
 				}
-				}
-						
-					
-						
 			}
-			if(tankOne.getBoundsInParent().intersects(powerUp.getBoundsInParent()))
-			{
-				if(!powerUp.dead)
-				{
+
+		}
+		if (tankOne.getBoundsInParent().intersects(powerUp.getBoundsInParent())) {
+			if (!powerUp.dead) {
 				powerUpPlayer.play();
 				powerUp.dead = true;
-				switch(((PowerUp)controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType())
-				{
+				switch (((PowerUp) controller.getSquarePiece(powerUp.r, powerUp.c)).getPowerUpType()) {
 				case FASTBULLET:
-					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setBulletSpeedMultiplier(1.5);
+					((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).setBulletSpeedMultiplier(1.5);
 					break;
 				case FASTSHOOT:
-					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShootSpeedMultiplier(1.5);
+					((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).setShootSpeedMultiplier(1.5);
 					break;
 				case FASTSPEED:
-					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setTankSpeedMultiplier(1.5);
+					((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).setTankSpeedMultiplier(1.5);
 					break;
 				case SHIELD:
-					((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(true);
+					((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).setShield(true);
 					tankOne.imageView.setImage(shieldedTank);
 					break;
 				default:
 					break;
 				}
 
-				}
 			}
-			
-			
-			
-			if(gameOverText.getText().equals(""))
-			{
-				root.getChildren().removeIf(n -> {
-					Piece s = (Piece) n;
-					return s.dead;
-				});
-			}
-			if(t > 2) {
-				t = 0;
-			}
-		
+		}
+
+		if (gameOverText.getText().equals("")) {
+			root.getChildren().removeIf(n -> {
+				Piece s = (Piece) n;
+				return s.dead;
+			});
+		}
+		if (t > 2) {
+			t = 0;
+		}
+
 	}
-	
-	private void shoot(Piece who)
-	{
-		if(who.type.equals("tankOne"))
-		{
-			if(tankOneBulletTimer < 1)
-			{
+
+	private void shoot(Piece who) {
+		if (who.type.equals("tankOne")) {
+			if (tankOneBulletTimer < 1) {
 				tankOneShootPlayer.stop();
 				tankOneShootPlayer.play();
-				tankOneBulletTimer=1.4;
-		
-				Piece s = new Piece((int)who.getTranslateX() + 18, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" ,bullet,0,0);
+				tankOneBulletTimer = 1.4;
+
+				Piece s = new Piece((int) who.getTranslateX() + 18, (int) who.getTranslateY() + 10, 5, 20,
+						who.type + "Bullet", bullet, 0, 0);
 				s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
 				root.getChildren().add(s);
 			}
-		}
-		else if(tankTwoBulletTimer < 1)
-		{
+		} else if (tankTwoBulletTimer < 1) {
 			tankTwoShootPlayer.stop();
 			tankTwoShootPlayer.play();
-			tankTwoBulletTimer=1.4;
-		
-			Piece s = new Piece((int)who.getTranslateX() + 18, (int)who.getTranslateY() + 10, 5, 20,who.type+"Bullet" , bullet,0,0);
+			tankTwoBulletTimer = 1.4;
+
+			Piece s = new Piece((int) who.getTranslateX() + 18, (int) who.getTranslateY() + 10, 5, 20,
+					who.type + "Bullet", bullet, 0, 0);
 			s.direction = controller.getSquarePiece(who.r, who.c).getDirection();
 			root.getChildren().add(s);
 		}
-		
-		TimerTask timerTask = new TimerTask()
-				{
 
-					@Override
-					public void run() {
-						
-						
-					}
-			
-				};
+		TimerTask timerTask = new TimerTask() {
+
+			@Override
+			public void run() {
+
+			}
+
+		};
 	}
-	
+
 	public class Piece extends StackPane {
 		boolean dead = false;
 		final String type;
@@ -749,8 +686,8 @@ public class Main extends Application {
 		piece.Piece.Direction direction;
 		int r;
 		int c;
-		Piece(int x, int y, int w, int h, String type, Image image, int r, int c)
-		{
+
+		Piece(int x, int y, int w, int h, String type, Image image, int r, int c) {
 			imageView = new ImageView();
 			imageView.setImage(image);
 //			indication = new Rectangle(10,5,Color.BLACK);
@@ -758,17 +695,14 @@ public class Main extends Application {
 //			border = new Rectangle(w,h,color);
 			getChildren().addAll(imageView);
 			direction = controller.getSquarePiece(r, c).getDirection();
-			if(type.equals("tankOne") || type.equals("tankTwo"))
-			{
-				
+			if (type.equals("tankOne") || type.equals("tankTwo")) {
+
 				imageView.setImage(tank);
 			}
-			if(type.equals("powerup"))
-			{
+			if (type.equals("powerup")) {
 				imageView.setScaleX(2);
 				imageView.setScaleY(2);
-				switch(((PowerUp)controller.getSquarePiece(r, c)).getPowerUpType())
-				{
+				switch (((PowerUp) controller.getSquarePiece(r, c)).getPowerUpType()) {
 				case FASTBULLET:
 					imageView.setImage(rocket);
 					break;
@@ -783,7 +717,7 @@ public class Main extends Application {
 					break;
 				default:
 					break;
-				
+
 				}
 			}
 			this.type = type;
@@ -792,45 +726,60 @@ public class Main extends Application {
 			this.r = r;
 			this.c = c;
 		}
+
 		void moveLeft() {
-			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateX(getTranslateX() - (BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else if(type.equals("tankOneBullet"))
-				setTranslateX(getTranslateX() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
-			else if(type.equals("tankTwoBullet"))
-				setTranslateX(getTranslateX() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+			if (type.equals("tankOne") || type.equals("tankTwo"))
+				setTranslateX(getTranslateX()
+						- (BASE_TANK_SPEED * ((Tank) controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+			else if (type.equals("tankOneBullet"))
+				setTranslateX(getTranslateX() - BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if (type.equals("tankTwoBullet"))
+				setTranslateX(getTranslateX() - BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
-		void moveRight()
-		{
-			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateX(getTranslateX() +(BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else if(type.equals("tankOneBullet"))
-				setTranslateX(getTranslateX() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
-			else if(type.equals("tankTwoBullet"))
-				setTranslateX(getTranslateX() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+
+		void moveRight() {
+			if (type.equals("tankOne") || type.equals("tankTwo"))
+				setTranslateX(getTranslateX()
+						+ (BASE_TANK_SPEED * ((Tank) controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+			else if (type.equals("tankOneBullet"))
+				setTranslateX(getTranslateX() + BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if (type.equals("tankTwoBullet"))
+				setTranslateX(getTranslateX() + BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
+
 		void moveUp() {
-			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateY(getTranslateY() -(BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else if(type.equals("tankOneBullet"))
-				setTranslateY(getTranslateY() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
-			else if(type.equals("tankTwoBullet"))
-				setTranslateY(getTranslateY() - BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
-				
+			if (type.equals("tankOne") || type.equals("tankTwo"))
+				setTranslateY(getTranslateY()
+						- (BASE_TANK_SPEED * ((Tank) controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+			else if (type.equals("tankOneBullet"))
+				setTranslateY(getTranslateY() - BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if (type.equals("tankTwoBullet"))
+				setTranslateY(getTranslateY() - BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+
 		}
-		void moveDown()
-		{
-			if(type.equals("tankOne") || type.equals("tankTwo"))
-				setTranslateY(getTranslateY() + (BASE_TANK_SPEED * ((Tank)controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
-			else if(type.equals("tankOneBullet"))
-				setTranslateY(getTranslateY() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
-			else if(type.equals("tankTwoBullet"))
-				setTranslateY(getTranslateY() + BASE_BULLET_SPEED * ((Tank)controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
+
+		void moveDown() {
+			if (type.equals("tankOne") || type.equals("tankTwo"))
+				setTranslateY(getTranslateY()
+						+ (BASE_TANK_SPEED * ((Tank) controller.getSquarePiece(r, c)).getTankSpeedMultiplier()));
+			else if (type.equals("tankOneBullet"))
+				setTranslateY(getTranslateY() + BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).getBulletSpeedMultiplier());
+			else if (type.equals("tankTwoBullet"))
+				setTranslateY(getTranslateY() + BASE_BULLET_SPEED
+						* ((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).getBulletSpeedMultiplier());
 		}
 	}
+
 	@Override
 	public void start(Stage primaryStage) throws FileNotFoundException {
-		
+
 		titleScreenNoButton = new Image(new FileInputStream("src/images/TitleScreenNoButton.png"));
 		pileOfTires = new Image(new FileInputStream("src/images/PileOfTires.png"));
 		bullet = new Image(new FileInputStream("src/images/Bullet.png"));
@@ -851,7 +800,7 @@ public class Main extends Application {
 		countDownHighSound = new Media(new File("src/images/CountDownHigh.mp3").toURI().toString());
 		buttonSound = new Media(new File("src/images/Button.mp3").toURI().toString());
 		root.setCache(true);
-	
+
 		powerUpPlayer = new MediaPlayer(powerUpSound);
 		tankExplosionPlayer = new MediaPlayer(tankExplosionSound);
 		tankOneShootPlayer = new MediaPlayer(tankShootSound);
@@ -869,23 +818,23 @@ public class Main extends Application {
 		buttonPlayer.setMute(true);
 		countDownLowPlayer.setMute(true);
 		countDownHighPlayer.setMute(true);
-		 musicPlayer.setOnEndOfMedia(new Runnable() {
-		       public void run() {
-		         musicPlayer.stop();
-		         musicPlayer.play();
-		       }
-		   });
+		musicPlayer.setOnEndOfMedia(new Runnable() {
+			public void run() {
+				musicPlayer.stop();
+				musicPlayer.play();
+			}
+		});
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.getIcons().add(tank);
-		//blackKnightImage = new Image(new FileInputStream("src/Black Knight.png"));
-		//primaryStage.getIcons().add(blackKnightImage);
-		
-		//titleScene = new Scene(createTitleContent(primaryStage));
-		
+		// blackKnightImage = new Image(new FileInputStream("src/Black Knight.png"));
+		// primaryStage.getIcons().add(blackKnightImage);
+
+		// titleScene = new Scene(createTitleContent(primaryStage));
+
 		scene = new Scene(createTitleScene(primaryStage));
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		//primaryStage.setScene(titleScene);
+		// primaryStage.setScene(titleScene);
 		primaryStage.setMaxHeight(1000);
 		primaryStage.setMaxWidth(1000);
 		primaryStage.setMinHeight(1000);
@@ -893,11 +842,10 @@ public class Main extends Application {
 		primaryStage.setHeight(1000);
 		primaryStage.setWidth(1000);
 		primaryStage.setTitle("Tanks 😎");
-		
+
 		scene.setOnKeyPressed(e -> {
-			
-			switch(e.getCode())
-			{
+
+			switch (e.getCode()) {
 			case A:
 				tankOneMoveLeft = true;
 				break;
@@ -911,35 +859,33 @@ public class Main extends Application {
 				tankOneMoveDown = true;
 				break;
 			case J:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveLeft = true;
 				break;
 			case L:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveRight = true;
 				break;
 			case I:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveUp = true;
 				break;
 			case K:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveDown = true;
 				break;
 			case C:
 				tankOneShoot = true;
 				break;
 			case N:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoShoot = true;
 				break;
 			}
-			}
-		);
-		scene.setOnKeyReleased( e-> {
-			
-			switch(e.getCode())
-			{
+		});
+		scene.setOnKeyReleased(e -> {
+
+			switch (e.getCode()) {
 			case A:
 				tankOneMoveLeft = false;
 				break;
@@ -953,31 +899,30 @@ public class Main extends Application {
 				tankOneMoveDown = false;
 				break;
 			case J:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveLeft = false;
 				break;
 			case L:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveRight = false;
 				break;
 			case I:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveUp = false;
 				break;
 			case K:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoMoveDown = false;
 				break;
 			case C:
 				tankOneShoot = false;
 				break;
 			case N:
-				if(twoPlayers)
+				if (twoPlayers)
 					tankTwoShoot = false;
 				break;
 			case SPACE:
-				if(tankOne.dead || tankTwo.dead)
-				{
+				if (tankOne.dead || tankTwo.dead) {
 
 					powerUpPlayer.stop();
 					tankExplosionPlayer.stop();
@@ -1008,8 +953,7 @@ public class Main extends Application {
 					controller = new ControllerImpl();
 					brickList = new LinkedList<Piece>();
 					scene.setRoot((createContent(primaryStage)));
-					
-					
+
 					break;
 				}
 			case ESCAPE:
@@ -1021,8 +965,7 @@ public class Main extends Application {
 				countDownLowPlayer.stop();
 				countDownHighPlayer.stop();
 				buttonPlayer.stop();
-				if(onTitleScreen)
-				{
+				if (onTitleScreen) {
 					primaryStage.close();
 					Platform.exit();
 					System.exit(0);
@@ -1053,12 +996,11 @@ public class Main extends Application {
 				scene.setRoot((createTitleScene(primaryStage)));
 				break;
 			}
-			
+
 		});
-		
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}

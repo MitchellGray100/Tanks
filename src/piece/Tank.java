@@ -1,28 +1,24 @@
 package piece;
 
-public class Tank extends AbstractPiece{
-	
+public class Tank extends AbstractPiece {
+
 	private boolean shield = false;
 	private double shootSpeedMultiplier;
 	private double bulletSpeedMultiplier;
 	private double tankSpeedMultiplier;
-	
-	public Tank(Player piecePlayer) 
-	{
-		
+
+	public Tank(Player piecePlayer) {
+
 		super(Type.TANK, piecePlayer);
 		setBulletSpeedMultiplier(1);
 		setTankSpeedMultiplier(1);
 		setShootSpeedMultiplier(1);
-		if(piecePlayer == Player.ONE)
-		{
+		if (piecePlayer == Player.ONE) {
 			setDirection(Direction.UP);
-		}
-		else
-		{
+		} else {
 			setDirection(Direction.DOWN);
 		}
-		
+
 	}
 
 	public boolean hasShield() {
@@ -32,7 +28,6 @@ public class Tank extends AbstractPiece{
 	public void setShield(boolean shield) {
 		this.shield = shield;
 	}
-
 
 	public double getBulletSpeedMultiplier() {
 		return bulletSpeedMultiplier;

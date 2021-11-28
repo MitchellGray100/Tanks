@@ -6,7 +6,4 @@ public class Bullet extends AbstractPiece {
 		super(Type.BULLET, piecePlayer);
 	}
 
-		
-	
-
 }
