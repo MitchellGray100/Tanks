@@ -24,16 +24,16 @@ public class Graph {
 			for (int c = 0; c < 10; c++) {
 				if (board[r][c] != null) {
 					if (board[r][c].getType() == Type.BRICK) {
-						setNode(r, c, new Node(new Brick()));
+						setNode(r, c, new Node(new Brick(), r, c));
 					} else if (board[r][c].getType() == Type.POWERUP) {
-						setNode(r, c, new Node(new PowerUp(((PowerUp) board[r][c]).getPowerUpType())));
+						setNode(r, c, new Node(new PowerUp(((PowerUp) board[r][c]).getPowerUpType()), r, c));
 
 					} else if (board[r][c].getType() == Type.TANK) {
-						setNode(r, c, new Node(new Tank(board[r][c].getPlayer())));
+						setNode(r, c, new Node(new Tank(board[r][c].getPlayer()), r, c));
 					}
 
 				} else {
-					setNode(r, c, new Node(null));
+					setNode(r, c, new Node(null, r, c));
 				}
 			}
 		}
@@ -42,7 +42,7 @@ public class Graph {
 			for (int c = 0; c < 10; c++) {
 				if (board[r][c] != null) {
 					if (board[r][c].getType() == Type.BRICK) {
-						setNode(r, c, new Node(new Brick()));
+						setNode(r, c, new Node(new Brick(), r, c));
 					} else if (board[r][c].getType() == Type.POWERUP) {
 
 						if (generateGraphHelper(r + 1, c, board))

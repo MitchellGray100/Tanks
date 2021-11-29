@@ -16,12 +16,11 @@ public abstract class AbstractBoard implements Board {
 	PieceFactory factory = new PieceFactory();
 	Graph board = new Graph();
 
-	public piece.Piece.Direction getAIMove(double r, double c, double x, double y)
-	{
-		return piece.Piece.UP;
-		
+	public piece.Piece.Direction getAIMove(double r, double c, double x, double y) {
+		return piece.Piece.Direction.UP;
+
 	}
-	
+
 	@Override
 	public Graph generateBoard() {
 		Graph graph = new Graph();
