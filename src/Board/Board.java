@@ -6,6 +6,10 @@ import piece.Piece;
 
 public interface Board {
 
+	public Graph getBoard();
+
+	public void setBoard(Graph board);
+
 	/**
 	 * Calculates the direction the AI needs to move to get to the player
 	 * 

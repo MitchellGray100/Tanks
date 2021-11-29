@@ -11,6 +11,7 @@ public class Node {
 	private int distance;
 	private int r;
 	private int c;
+	private Node prev;
 	private List<Node> edges = new LinkedList<Node>();
 
 	public Node(Piece pieceType, int r, int c) {
@@ -18,6 +19,7 @@ public class Node {
 		setDistance(Integer.MAX_VALUE);
 		this.setR(r);
 		this.setC(c);
+		setPrev(null);
 	}
 
 	public Piece getPiece() {
@@ -68,6 +70,14 @@ public class Node {
 
 	public void setC(int c) {
 		this.c = c;
+	}
+
+	public Node getPrev() {
+		return prev;
+	}
+
+	public void setPrev(Node prev) {
+		this.prev = prev;
 	}
 
 }

@@ -11,7 +11,49 @@ public class Graph {
 
 	public Graph() {
 		graph = new Node[10][10];
+	}
 
+	public void generateEdges() {
+		for (int r = 0; r < 10; r++) {
+			for (int c = 0; c < 10; c++) {
+				if (getNode(r, c).getPiece() != null) {
+					if (getNode(r, c).getPiece().getType() == Type.BRICK) {
+//						setNode(r, c, new Node(new Brick(), r, c));
+					} else if (getNode(r, c).getPiece().getType() == Type.POWERUP) {
+
+						if (generateGraphHelper(r + 1, c))
+							getNode(r, c).addEdge(getNode(r + 1, c));
+						if (generateGraphHelper(r, c + 1))
+							getNode(r, c).addEdge(getNode(r, c + 1));
+						if (generateGraphHelper(r - 1, c))
+							getNode(r, c).addEdge(getNode(r - 1, c));
+						if (generateGraphHelper(r, c - 1))
+							getNode(r, c).addEdge(getNode(r, c - 1));
+
+					} else if (getNode(r, c).getPiece().getType() == Type.TANK) {
+						if (generateGraphHelper(r + 1, c))
+							getNode(r, c).addEdge(getNode(r + 1, c));
+						if (generateGraphHelper(r, c + 1))
+							getNode(r, c).addEdge(getNode(r, c + 1));
+						if (generateGraphHelper(r - 1, c))
+							getNode(r, c).addEdge(getNode(r - 1, c));
+						if (generateGraphHelper(r, c - 1))
+							getNode(r, c).addEdge(getNode(r, c - 1));
+					}
+
+				} else {
+
+					if (generateGraphHelper(r + 1, c))
+						getNode(r, c).addEdge(getNode(r + 1, c));
+					if (generateGraphHelper(r, c + 1))
+						getNode(r, c).addEdge(getNode(r, c + 1));
+					if (generateGraphHelper(r - 1, c))
+						getNode(r, c).addEdge(getNode(r - 1, c));
+					if (generateGraphHelper(r, c - 1))
+						getNode(r, c).addEdge(getNode(r, c - 1));
+				}
+			}
+		}
 	}
 
 	/**
@@ -37,56 +79,18 @@ public class Graph {
 				}
 			}
 		}
+		generateEdges();
 
-		for (int r = 0; r < 10; r++) {
-			for (int c = 0; c < 10; c++) {
-				if (board[r][c] != null) {
-					if (board[r][c].getType() == Type.BRICK) {
-						setNode(r, c, new Node(new Brick(), r, c));
-					} else if (board[r][c].getType() == Type.POWERUP) {
-
-						if (generateGraphHelper(r + 1, c, board))
-							getNode(r, c).addEdge(getNode(r + 1, c));
-						if (generateGraphHelper(r, c + 1, board))
-							getNode(r, c).addEdge(getNode(r, c + 1));
-						if (generateGraphHelper(r - 1, c, board))
-							getNode(r, c).addEdge(getNode(r - 1, c));
-						if (generateGraphHelper(r, c - 1, board))
-							getNode(r, c).addEdge(getNode(r, c - 1));
-
-					} else if (board[r][c].getType() == Type.TANK) {
-						if (generateGraphHelper(r + 1, c, board))
-							getNode(r, c).addEdge(getNode(r + 1, c));
-						if (generateGraphHelper(r, c + 1, board))
-							getNode(r, c).addEdge(getNode(r, c + 1));
-						if (generateGraphHelper(r - 1, c, board))
-							getNode(r, c).addEdge(getNode(r - 1, c));
-						if (generateGraphHelper(r, c - 1, board))
-							getNode(r, c).addEdge(getNode(r, c - 1));
-					}
-
-				} else {
-
-					if (generateGraphHelper(r + 1, c, board))
-						getNode(r, c).addEdge(getNode(r + 1, c));
-					if (generateGraphHelper(r, c + 1, board))
-						getNode(r, c).addEdge(getNode(r, c + 1));
-					if (generateGraphHelper(r - 1, c, board))
-						getNode(r, c).addEdge(getNode(r - 1, c));
-					if (generateGraphHelper(r, c - 1, board))
-						getNode(r, c).addEdge(getNode(r, c - 1));
-				}
-			}
-		}
 	}
 
-	private boolean generateGraphHelper(int r, int c, Piece[][] board) {
+	private boolean generateGraphHelper(int r, int c) {
 		if (r < 0 || r > 9 || c < 0 || c > 9) {
 			return false;
 		}
-		if (board[r][c] == null) {
+		if (getNode(r, c).getPiece() == null) {
 			return true;
-		} else if (board[r][c].getType() == Piece.Type.POWERUP || board[r][c].getType() == Piece.Type.TANK) {
+		} else if (getNode(r, c).getPiece().getType() == Piece.Type.POWERUP
+				|| getNode(r, c).getPiece().getType() == Piece.Type.TANK) {
 			return true;
 		}
 

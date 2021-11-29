@@ -16,9 +16,93 @@ public abstract class AbstractBoard implements Board {
 	PieceFactory factory = new PieceFactory();
 	Graph board = new Graph();
 
-	public piece.Piece.Direction getAIMove(double r, double c, double x, double y) {
-		return piece.Piece.Direction.UP;
+	public Graph getBoard() {
+		return board;
+	}
 
+	public void setBoard(Graph board) {
+		this.board = board;
+	}
+
+	public piece.Piece.Direction getAIMove(double r, double c, double x, double y) {
+		board.reset();
+		Graph newGraph = new Graph();
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 10; col++) {
+				newGraph.setNode(row, col, new Node(null, row, col));
+
+			}
+		}
+		int newR = (int) (r / (100));
+		int newC = (int) (c / (100));
+		int newX = (int) (x / (100));
+		int newY = (int) (y / (100));
+		for (int row = 0; r < 10; r++) {
+			for (int col = 0; col < 10; col++) {
+				if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
+						&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.ONE)) {
+					board.setNode(newX, newY, board.getNode(row, col));
+					board.setNode(row, col, new Node(null, row, col));
+				}
+				if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
+						&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.TWO)) {
+					board.setNode(newR, newC, board.getNode(row, col));
+					board.setNode(row, col, new Node(null, row, col));
+				}
+
+			}
+		}
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 10; col++) {
+
+				newGraph.setNode(row, col, board.getNode(col, row));
+				newGraph.getNode(row, col).getEdges().clear();
+			}
+		}
+		newGraph.generateEdges();
+
+		HashSet<Node> visited = new HashSet<Node>();
+		Queue<Node> queue = new LinkedList<Node>();
+
+		visited.add(newGraph.getNode(newR, newC));
+		queue.add(newGraph.getNode(newR, newC));
+
+		while (!queue.isEmpty()) {
+
+			Node s = queue.peek();
+
+			if (s.equals(newGraph.getNode(newX, newY))) {
+				System.out.println("test");
+				break;
+			}
+			queue.poll();
+
+			for (Node v : s.getEdges()) {
+				if (!visited.contains(v)) {
+					visited.add(v);
+					queue.add(v);
+					v.setPrev(s);
+				}
+			}
+		}
+
+		Node temp = newGraph.getNode(newX, newY).getPrev();
+		while (!temp.getPrev().equals(newGraph.getNode(newR, newC))) {
+			System.out.println(temp.getR() + " " + temp.getC());
+			temp = temp.getPrev();
+		}
+		System.out.println(temp.getR() + " " + temp.getC());
+		if (temp.getR() > newC) {
+			return Piece.Direction.DOWN;
+		} else if (temp.getR() < newC) {
+			return Piece.Direction.UP;
+		}
+		if (temp.getC() > newR) {
+			return piece.Piece.Direction.RIGHT;
+		} else if (temp.getC() < newR) {
+			return piece.Piece.Direction.LEFT;
+		}
+		return piece.Piece.Direction.LEFT;
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class ControllerImpl implements Controller {
 
 	@Override
 	public Graph generateBoard() {
-		return board.generateBoard();
+		return board.getBoard();
 	}
 
 	public Piece getSquarePiece(int r, int c) {
