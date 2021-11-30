@@ -87,6 +87,9 @@ public abstract class AbstractBoard implements Board {
 		}
 
 		Node temp = newGraph.getNode(newX, newY).getPrev();
+		if (temp == null) {
+			return piece.Piece.Direction.DOWN;
+		}
 		while (!temp.getPrev().equals(newGraph.getNode(newR, newC))) {
 			System.out.println(temp.getR() + " " + temp.getC());
 			temp = temp.getPrev();

@@ -25,7 +25,7 @@ public class BoardDebugImpl extends AbstractBoard {
 		}
 		board.setNode(8, 1, new Node(new Tank(Player.TWO), 8, 1));
 		board.setNode(1, 8, new Node(new Tank(Player.ONE), 1, 8));
-		board.setNode(6, 5, new Node(new Brick(), 6, 5));
+		board.setNode(6, 5, new Node(new Brick(), 5, 6));
 		board.setNode(0, 0, new Node(new PowerUp(piece.Piece.PowerUpType.FASTBULLET), 0, 0));
 
 	}
