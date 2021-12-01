@@ -40,3 +40,6 @@ Full Game with Shield PowerUp.</br>
 
 Full Game with Wheel PowerUp.</br>
 ![GIF of Full Game with Wheel PowerUp](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/WheelGIF.gif)
+
+AI navigating to kill player.</br>
+![GIF of Full Game with AI Playing](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/AIGIF.gif)
