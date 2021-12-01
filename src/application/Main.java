@@ -549,8 +549,8 @@ public class Main extends Application {
 									|| (tankTwo.getTranslateX() % 100 >= 25 && tankTwo.getTranslateX() % 100 <= 50)) {
 								tankTwoMoveLeft = true;
 							} else {
-								System.out.println("TranslateX = " + tankTwo.getTranslateX());
-								System.out.println("TranslateY = " + tankTwo.getTranslateY());
+//								System.out.println("TranslateX = " + tankTwo.getTranslateX());
+//								System.out.println("TranslateY = " + tankTwo.getTranslateY());
 								tankTwoMoveUp = true;
 							}
 							break;
@@ -559,8 +559,8 @@ public class Main extends Application {
 									|| (tankTwo.getTranslateX() % 100 >= 25 && tankTwo.getTranslateX() % 100 <= 50)) {
 								tankTwoMoveLeft = true;
 							} else {
-								System.out.println("TranslateX = " + tankTwo.getTranslateX());
-								System.out.println("TranslateY = " + tankTwo.getTranslateY());
+//								System.out.println("TranslateX = " + tankTwo.getTranslateX());
+//								System.out.println("TranslateY = " + tankTwo.getTranslateY());
 								tankTwoMoveDown = true;
 							}
 							break;
@@ -569,8 +569,8 @@ public class Main extends Application {
 									|| (tankTwo.getTranslateY() % 100 >= 0 && tankTwo.getTranslateY() % 100 <= 25)) {
 								tankTwoMoveDown = true;
 							} else {
-								System.out.println("TranslateX = " + tankTwo.getTranslateX());
-								System.out.println("TranslateY = " + tankTwo.getTranslateY());
+//								System.out.println("TranslateX = " + tankTwo.getTranslateX());
+//								System.out.println("TranslateY = " + tankTwo.getTranslateY());
 								tankTwoMoveLeft = true;
 							}
 							break;
@@ -579,8 +579,8 @@ public class Main extends Application {
 									|| (tankTwo.getTranslateY() % 100 >= 0 && tankTwo.getTranslateY() % 100 <= 25)) {
 								tankTwoMoveDown = true;
 							} else {
-								System.out.println("TranslateX = " + tankTwo.getTranslateX());
-								System.out.println("TranslateY = " + tankTwo.getTranslateY());
+//								System.out.println("TranslateX = " + tankTwo.getTranslateX());
+//								System.out.println("TranslateY = " + tankTwo.getTranslateY());
 								tankTwoMoveRight = true;
 							}
 							break;

@@ -46,32 +46,32 @@ public abstract class AbstractBoard implements Board {
 			}
 		}
 		newGraph.generateEdges();
-
-		for (int row = 0; row < 10; row++) {
-			for (int col = 0; col < 10; col++) {
-				if (newGraph.getNode(row, col).getPiece() != null) {
-					switch (newGraph.getNode(row, col).getPiece().getType()) {
-					case BRICK:
-						System.out.print("B");
-						break;
-					case BULLET:
-						break;
-					case POWERUP:
-						System.out.print("P");
-						break;
-					case TANK:
-						System.out.print("T");
-						break;
-					default:
-						break;
-
-					}
-				} else {
-					System.out.print(" ");
-				}
-			}
-			System.out.println();
-		}
+//DEBUGGING
+//		for (int row = 0; row < 10; row++) {
+//			for (int col = 0; col < 10; col++) {
+//				if (newGraph.getNode(row, col).getPiece() != null) {
+//					switch (newGraph.getNode(row, col).getPiece().getType()) {
+//					case BRICK:
+//						System.out.print("B");
+//						break;
+//					case BULLET:
+//						break;
+//					case POWERUP:
+//						System.out.print("P");
+//						break;
+//					case TANK:
+//						System.out.print("T");
+//						break;
+//					default:
+//						break;
+//
+//					}
+//				} else {
+//					System.out.print(" ");
+//				}
+//			}
+//			System.out.println();
+//		}
 		HashSet<Node> visited = new HashSet<Node>();
 		Queue<Node> queue = new LinkedList<Node>();
 
@@ -83,7 +83,7 @@ public abstract class AbstractBoard implements Board {
 			Node s = queue.peek();
 
 			if (s.equals(newGraph.getNode(newY, newX))) {
-				System.out.println("test");
+//				System.out.println("test");
 				break;
 			}
 			queue.poll();
@@ -100,16 +100,16 @@ public abstract class AbstractBoard implements Board {
 		Node temp = newGraph.getNode(newY, newX).getPrev();
 		// Makes sure the game doesn't throw errors if there isn't a path
 		if (temp == null) {
-			System.out.println("error" + newX + " " + newY + " ");
+//			System.out.println("error" + newX + " " + newY + " ");
 			return piece.Piece.Direction.NONE;
 		}
 		// Makes sure the game doesn't go into an infinite loop if there is a bug
 		if (temp.getPrev().getPrev().equals(temp)) {
-			System.out.println("same square" + newX + " " + newY + " ");
+//			System.out.println("same square" + newX + " " + newY + " ");
 			return piece.Piece.Direction.NONE;
 		}
 		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
-			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
+//			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
 			temp2 = temp;
 			temp = temp.getPrev();
 
@@ -117,7 +117,7 @@ public abstract class AbstractBoard implements Board {
 		if (temp != null) {
 			temp2 = temp;
 		}
-		System.out.println(temp.getC() + " " + temp.getR() + " TANK POSITION iS: " + newC + " " + newR);
+//		System.out.println(temp.getC() + " " + temp.getR() + " TANK POSITION iS: " + newC + " " + newR);
 
 		if (temp2.getR() > newR) {
 			return Piece.Direction.RIGHT;
