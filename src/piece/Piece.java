@@ -1,37 +1,23 @@
 package piece;
 
 public interface Piece {
-	
 
-	enum Direction 
-	{
-		RIGHT,
-		LEFT,
-		UP,
-		DOWN
+	enum Direction {
+		RIGHT, LEFT, UP, DOWN, NONE
 	}
-	
-	enum PowerUpType
-	{
-		FASTSHOOT,
-		FASTSPEED,
-		FASTBULLET,
-		SHIELD
+
+	enum PowerUpType {
+		FASTSHOOT, FASTSPEED, FASTBULLET, SHIELD
 	}
-	
+
 	enum Type {
-		BRICK,
-		BULLET,
-		POWERUP,
-		TANK
+		BRICK, BULLET, POWERUP, TANK
 	}
-	
-	enum Player{
-		ONE,
-		TWO,
-		NONE
+
+	enum Player {
+		ONE, TWO, NONE
 	}
-	
+
 	/**
 	 * Gets the Type of piece
 	 *
@@ -45,8 +31,7 @@ public interface Piece {
 	 * @param pieceType The pieceType of the piece
 	 */
 	void setType(Type pieceType);
-	
-	
+
 	/**
 	 * Gets the Player of piece
 	 *
@@ -60,9 +45,8 @@ public interface Piece {
 	 * @param playerType The playerType of the pieces
 	 */
 	void setPlayer(Player playerType);
-	
-	
+
 	public Direction getDirection();
-	
+
 	public void setDirection(Direction direction);
 }

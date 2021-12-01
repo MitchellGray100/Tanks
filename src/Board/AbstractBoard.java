@@ -36,27 +36,8 @@ public abstract class AbstractBoard implements Board {
 
 		int newR = (int) (r / (100));
 		int newC = (int) (c / (100));
-		System.out.println("ROW is: " + c);
 		int newX = (int) (x / (100));
 		int newY = (int) (y / (100));
-//		for (int row = 0; row < 10; row++) {
-//			for (int col = 0; col < 10; col++) {
-//				if (board.getNode(row, col).getPiece() != null) {
-//					if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
-//							&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.ONE)) {
-//						System.out.println("REACHED");
-//						board.setNode(newX, newY, board.getNode(row, col));
-//						board.setNode(row, col, new Node(null, row, col));
-//					}
-//					if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
-//							&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.TWO)) {
-//						System.out.println("REACHED2");
-//						board.setNode(newR, newC, board.getNode(row, col));
-//						board.setNode(row, col, new Node(null, row, col));
-//					}
-//				}
-//			}
-//		}
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 
@@ -120,12 +101,12 @@ public abstract class AbstractBoard implements Board {
 		// Makes sure the game doesn't throw errors if there isn't a path
 		if (temp == null) {
 			System.out.println("error" + newX + " " + newY + " ");
-			return piece.Piece.Direction.DOWN;
+			return piece.Piece.Direction.NONE;
 		}
 		// Makes sure the game doesn't go into an infinite loop if there is a bug
 		if (temp.getPrev().getPrev().equals(temp)) {
 			System.out.println("same square" + newX + " " + newY + " ");
-			return piece.Piece.Direction.DOWN;
+			return piece.Piece.Direction.NONE;
 		}
 		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
 			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
@@ -147,7 +128,7 @@ public abstract class AbstractBoard implements Board {
 		} else if (temp2.getC() < newC) {
 			return piece.Piece.Direction.UP;
 		}
-		return piece.Piece.Direction.DOWN;
+		return piece.Piece.Direction.NONE;
 	}
 
 	@Override

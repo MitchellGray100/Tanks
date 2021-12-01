@@ -545,7 +545,7 @@ public class Main extends Application {
 						switch (controller.getAIMove(tankTwo.getTranslateX() + 25, tankTwo.getTranslateY() + 25,
 								tankOne.getTranslateX(), tankOne.getTranslateY())) {
 						case UP:
-							if (tankTwo.getTranslateX() % 100 <= 72.5 && tankTwo.getTranslateX() % 100 >= 50) {
+							if (tankTwo.getTranslateX() % 100 <= 75 && tankTwo.getTranslateX() % 100 >= 50) {
 								tankTwoMoveLeft = true;
 							} else {
 								System.out.println("TranslateX = " + tankTwo.getTranslateX());
@@ -554,7 +554,7 @@ public class Main extends Application {
 							}
 							break;
 						case DOWN:
-							if (tankTwo.getTranslateX() % 100 <= 72.5 && tankTwo.getTranslateX() % 100 >= 50) {
+							if (tankTwo.getTranslateX() % 100 <= 75 && tankTwo.getTranslateX() % 100 >= 50) {
 								tankTwoMoveLeft = true;
 							} else {
 								System.out.println("TranslateX = " + tankTwo.getTranslateX());
@@ -563,7 +563,7 @@ public class Main extends Application {
 							}
 							break;
 						case LEFT:
-							if (tankTwo.getTranslateY() % 100 >= 72.5 && tankTwo.getTranslateY() % 100 <= 100) {
+							if (tankTwo.getTranslateY() % 100 >= 75 && tankTwo.getTranslateY() % 100 <= 100) {
 								tankTwoMoveDown = true;
 							} else {
 								System.out.println("TranslateX = " + tankTwo.getTranslateX());
@@ -572,7 +572,7 @@ public class Main extends Application {
 							}
 							break;
 						case RIGHT:
-							if (tankTwo.getTranslateY() % 100 >= 72.5 && tankTwo.getTranslateY() % 100 <= 100) {
+							if (tankTwo.getTranslateY() % 100 >= 75 && tankTwo.getTranslateY() % 100 <= 100) {
 								tankTwoMoveDown = true;
 							} else {
 								System.out.println("TranslateX = " + tankTwo.getTranslateX());
@@ -580,8 +580,10 @@ public class Main extends Application {
 								tankTwoMoveRight = true;
 							}
 							break;
+						case NONE:
+							break;
 						default:
-							tankTwoMoveUp = true;
+
 						}
 						shoot(tankTwo);
 					}
