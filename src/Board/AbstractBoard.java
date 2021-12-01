@@ -126,23 +126,26 @@ public abstract class AbstractBoard implements Board {
 			return piece.Piece.Direction.DOWN;
 		}
 		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
-			System.out.println(temp.getR() + " " + temp.getC() + " TANK COLUMN iS: " + newC + " " + newR);
+			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
 			temp2 = temp;
 			temp = temp.getPrev();
 
 		}
-		System.out.println(temp.getR() + " " + temp.getC() + " TANK POSITION iS: " + newC + " " + newR);
-
-		if (temp2.getC() > newR) {
-			return piece.Piece.Direction.RIGHT;
-		} else if (temp2.getC() < newR) {
-			return piece.Piece.Direction.LEFT;
-		} else if (temp2.getR() > newC) {
-			return Piece.Direction.DOWN;
-		} else if (temp2.getR() < newC) {
-			return Piece.Direction.UP;
+		if (temp != null) {
+			temp2 = temp;
 		}
-		return piece.Piece.Direction.LEFT;
+		System.out.println(temp.getC() + " " + temp.getR() + " TANK POSITION iS: " + newC + " " + newR);
+
+		if (temp2.getR() > newR) {
+			return Piece.Direction.RIGHT;
+		} else if (temp2.getR() < newR) {
+			return Piece.Direction.LEFT;
+		} else if (temp2.getC() > newC) {
+			return piece.Piece.Direction.DOWN;
+		} else if (temp2.getC() < newC) {
+			return piece.Piece.Direction.UP;
+		}
+		return piece.Piece.Direction.DOWN;
 	}
 
 	@Override
