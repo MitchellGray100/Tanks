@@ -2,7 +2,7 @@
 MitchellGray100@gmail.com 
 https://github.com/MitchellGray100/Tanks
 
-JavaFX Two Player Tank Game
+JavaFX One/Two Player Tank Game
 
 The game starts by having a tank at the bottom left and the top right. The tanks are controlled by seperate players.
 One goal is to make an AI that can replace the second player. There is also a power up that spawns equidistant from both
