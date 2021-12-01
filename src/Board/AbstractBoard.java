@@ -33,8 +33,10 @@ public abstract class AbstractBoard implements Board {
 
 			}
 		}
+
 		int newR = (int) (r / (100));
 		int newC = (int) (c / (100));
+		System.out.println("ROW is: " + c);
 		int newX = (int) (x / (100));
 		int newY = (int) (y / (100));
 //		for (int row = 0; row < 10; row++) {
