@@ -57,6 +57,7 @@ public class Main extends Application {
 	private boolean twoPlayers;
 	private boolean startGameBoolean = false;
 	private boolean onTitleScreen = true;
+	private boolean muted = false;
 	private double t = 0;
 	private double tankOneBulletTimer = 1;
 	private double tankTwoBulletTimer = 1;
@@ -541,7 +542,7 @@ public class Main extends Application {
 						tankTwoMoveDown = false;
 						tankTwoMoveLeft = false;
 						tankTwoMoveRight = false;
-						switch (controller.getAIMove(tankTwo.getTranslateX(), tankTwo.getTranslateY(),
+						switch (controller.getAIMove(tankTwo.getTranslateX() + 25, tankTwo.getTranslateY() + 25,
 								tankOne.getTranslateX(), tankOne.getTranslateY())) {
 						case UP:
 							tankTwoMoveUp = true;

@@ -37,21 +37,24 @@ public abstract class AbstractBoard implements Board {
 		int newC = (int) (c / (100));
 		int newX = (int) (x / (100));
 		int newY = (int) (y / (100));
-		for (int row = 0; r < 10; r++) {
-			for (int col = 0; col < 10; col++) {
-				if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
-						&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.ONE)) {
-					board.setNode(newX, newY, board.getNode(row, col));
-					board.setNode(row, col, new Node(null, row, col));
-				}
-				if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
-						&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.TWO)) {
-					board.setNode(newR, newC, board.getNode(row, col));
-					board.setNode(row, col, new Node(null, row, col));
-				}
-
-			}
-		}
+//		for (int row = 0; row < 10; row++) {
+//			for (int col = 0; col < 10; col++) {
+//				if (board.getNode(row, col).getPiece() != null) {
+//					if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
+//							&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.ONE)) {
+//						System.out.println("REACHED");
+//						board.setNode(newX, newY, board.getNode(row, col));
+//						board.setNode(row, col, new Node(null, row, col));
+//					}
+//					if (board.getNode(row, col).getPiece().getType() == Piece.Type.TANK
+//							&& (board.getNode(row, col).getPiece().getPlayer() == Piece.Player.TWO)) {
+//						System.out.println("REACHED2");
+//						board.setNode(newR, newC, board.getNode(row, col));
+//						board.setNode(row, col, new Node(null, row, col));
+//					}
+//				}
+//			}
+//		}
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 
@@ -61,17 +64,42 @@ public abstract class AbstractBoard implements Board {
 		}
 		newGraph.generateEdges();
 
+		for (int row = 0; row < 10; row++) {
+			for (int col = 0; col < 10; col++) {
+				if (newGraph.getNode(row, col).getPiece() != null) {
+					switch (newGraph.getNode(row, col).getPiece().getType()) {
+					case BRICK:
+						System.out.print("B");
+						break;
+					case BULLET:
+						break;
+					case POWERUP:
+						System.out.print("P");
+						break;
+					case TANK:
+						System.out.print("T");
+						break;
+					default:
+						break;
+
+					}
+				} else {
+					System.out.print(" ");
+				}
+			}
+			System.out.println();
+		}
 		HashSet<Node> visited = new HashSet<Node>();
 		Queue<Node> queue = new LinkedList<Node>();
 
-		visited.add(newGraph.getNode(newR, newC));
-		queue.add(newGraph.getNode(newR, newC));
+		visited.add(newGraph.getNode(newC, newR));
+		queue.add(newGraph.getNode(newC, newR));
 
 		while (!queue.isEmpty()) {
 
 			Node s = queue.peek();
 
-			if (s.equals(newGraph.getNode(newX, newY))) {
+			if (s.equals(newGraph.getNode(newY, newX))) {
 				System.out.println("test");
 				break;
 			}
@@ -85,25 +113,34 @@ public abstract class AbstractBoard implements Board {
 				}
 			}
 		}
-
-		Node temp = newGraph.getNode(newX, newY).getPrev();
+		Node temp2 = newGraph.getNode(newY, newX);
+		Node temp = newGraph.getNode(newY, newX).getPrev();
+		// Makes sure the game doesn't throw errors if there isn't a path
 		if (temp == null) {
+			System.out.println("error" + newX + " " + newY + " ");
 			return piece.Piece.Direction.DOWN;
 		}
-		while (!temp.getPrev().equals(newGraph.getNode(newR, newC))) {
-			System.out.println(temp.getR() + " " + temp.getC());
+		// Makes sure the game doesn't go into an infinite loop if there is a bug
+		if (temp.getPrev().getPrev().equals(temp)) {
+			System.out.println("same square" + newX + " " + newY + " ");
+			return piece.Piece.Direction.DOWN;
+		}
+		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
+			System.out.println(temp.getR() + " " + temp.getC() + " TANK COLUMN iS: " + newC + " " + newR);
+			temp2 = temp;
 			temp = temp.getPrev();
+
 		}
-		System.out.println(temp.getR() + " " + temp.getC());
-		if (temp.getR() > newC) {
-			return Piece.Direction.DOWN;
-		} else if (temp.getR() < newC) {
-			return Piece.Direction.UP;
-		}
-		if (temp.getC() > newR) {
+		System.out.println(temp.getR() + " " + temp.getC() + " TANK POSITION iS: " + newC + " " + newR);
+
+		if (temp2.getC() > newR) {
 			return piece.Piece.Direction.RIGHT;
-		} else if (temp.getC() < newR) {
+		} else if (temp2.getC() < newR) {
 			return piece.Piece.Direction.LEFT;
+		} else if (temp2.getR() > newC) {
+			return Piece.Direction.DOWN;
+		} else if (temp2.getR() < newC) {
+			return Piece.Direction.UP;
 		}
 		return piece.Piece.Direction.LEFT;
 	}
