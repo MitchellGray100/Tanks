@@ -984,9 +984,9 @@ public class Main extends Application {
 					controller = new ControllerImpl();
 					brickList = new LinkedList<Piece>();
 					scene.setRoot((createContent(primaryStage)));
-
-					break;
 				}
+				break;
+
 			case ESCAPE:
 
 				tankExplosionPlayer.stop();
