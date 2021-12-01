@@ -54,6 +54,14 @@ public class Main extends Application {
 	private boolean tankTwoMoveLeft;
 	private boolean tankOneShoot;
 	private boolean tankTwoShoot;
+	private boolean tankOneMoveUpHeld;
+	private boolean tankOneMoveRightHeld;
+	private boolean tankOneMoveDownHeld;
+	private boolean tankOneMoveLeftHeld;
+	private boolean tankTwoMoveUpHeld;
+	private boolean tankTwoMoveRightHeld;
+	private boolean tankTwoMoveDownHeld;
+	private boolean tankTwoMoveLeftHeld;
 	private boolean twoPlayers;
 	private boolean startGameBoolean = false;
 	private boolean onTitleScreen = true;
@@ -474,7 +482,9 @@ public class Main extends Application {
 						shoot(tankTwo);
 					}
 					if (tankTwoMoveRight) {
-						if (!tankTwoMoveUp && !tankTwoMoveDown) {
+
+						tankTwoMoveUp = false;
+						tankTwoMoveDown = false;
 							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.RIGHT);
 							for (Piece piece : brickList) {
 								if (tankTwo.getBoundsInParent().intersects(piece.r * 100, piece.c * 100 + 5, 10, 90)) {
@@ -486,10 +496,11 @@ public class Main extends Application {
 								s.moveLeft();
 							}
 							s.moveRight();
-						}
+						
 					}
 					if (tankTwoMoveLeft) {
-						if (!tankTwoMoveUp && !tankTwoMoveDown) {
+						tankTwoMoveUp = false;
+						tankTwoMoveDown = false;
 							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.LEFT);
 							for (Piece piece : brickList) {
 								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 90, piece.c * 100 + 5, 10,
@@ -502,11 +513,12 @@ public class Main extends Application {
 								s.moveRight();
 							}
 							s.moveLeft();
-						}
+						
 					}
 					if (tankTwoMoveUp) {
-//						if(!tankTwoMoveLeft && !tankTwoMoveRight)
-						{
+//						
+						tankTwoMoveLeft = false;
+						tankTwoMoveRight = false;
 							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.UP);
 							for (Piece piece : brickList) {
 								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100 + 90, 90,
@@ -519,11 +531,11 @@ public class Main extends Application {
 								s.moveDown();
 							}
 							s.moveUp();
-						}
+						
 					}
 					if (tankTwoMoveDown) {
-//						if(!tankTwoMoveLeft && !tankTwoMoveRight)
-						{
+						tankTwoMoveLeft = false;
+						tankTwoMoveRight = false;
 							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.DOWN);
 							for (Piece piece : brickList) {
 								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100, 90, 10)) {
@@ -535,7 +547,7 @@ public class Main extends Application {
 								s.moveUp();
 							}
 							s.moveDown();
-						}
+						
 					}
 					if (!twoPlayers) {
 						tankTwoMoveUp = false;
@@ -879,36 +891,52 @@ public class Main extends Application {
 			switch (e.getCode()) {
 			case A:
 				tankOneMoveLeft = true;
+				tankOneMoveLeftHeld = true;
 				break;
 			case D:
 				tankOneMoveRight = true;
+				tankOneMoveRightHeld = true;
 				break;
 			case W:
 				tankOneMoveUp = true;
+				tankOneMoveUpHeld = true;
 				break;
 			case S:
 				tankOneMoveDown = true;
+				tankOneMoveDownHeld = true;
 				break;
-			case J:
+			case LEFT:
 				if (twoPlayers)
+				{
 					tankTwoMoveLeft = true;
+					tankTwoMoveLeftHeld = true;
+				}
 				break;
-			case L:
+			case RIGHT:
 				if (twoPlayers)
+				{
 					tankTwoMoveRight = true;
+					tankTwoMoveRightHeld = true;
+				}
 				break;
-			case I:
+			case UP:
 				if (twoPlayers)
+				{
 					tankTwoMoveUp = true;
+					tankTwoMoveUpHeld = true;
+				}
 				break;
-			case K:
+			case DOWN:
 				if (twoPlayers)
+				{
 					tankTwoMoveDown = true;
+					tankTwoMoveDownHeld = true;
+				}
 				break;
 			case C:
 				tankOneShoot = true;
 				break;
-			case N:
+			case PERIOD:
 				if (twoPlayers)
 					tankTwoShoot = true;
 				break;
@@ -919,36 +947,52 @@ public class Main extends Application {
 			switch (e.getCode()) {
 			case A:
 				tankOneMoveLeft = false;
+				tankOneMoveLeftHeld = false;
 				break;
 			case D:
 				tankOneMoveRight = false;
+				tankOneMoveRightHeld = false;
 				break;
 			case W:
 				tankOneMoveUp = false;
+				tankOneMoveUpHeld = false;
 				break;
 			case S:
 				tankOneMoveDown = false;
+				tankOneMoveDownHeld = false;
 				break;
-			case J:
+			case LEFT:
 				if (twoPlayers)
+				{
 					tankTwoMoveLeft = false;
+					tankTwoMoveLeftHeld = false;
+				}
 				break;
-			case L:
+			case RIGHT:
 				if (twoPlayers)
+				{
 					tankTwoMoveRight = false;
+					tankTwoMoveRightHeld = false;
+				}
 				break;
-			case I:
+			case UP:
 				if (twoPlayers)
+				{
 					tankTwoMoveUp = false;
+					tankTwoMoveUpHeld = false;
+				}
 				break;
-			case K:
+			case DOWN:
 				if (twoPlayers)
+				{
 					tankTwoMoveDown = false;
+				tankTwoMoveLeftHeld = false;
+				}
 				break;
 			case C:
 				tankOneShoot = false;
 				break;
-			case N:
+			case PERIOD:
 				if (twoPlayers)
 					tankTwoShoot = false;
 				break;
