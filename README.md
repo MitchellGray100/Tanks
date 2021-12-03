@@ -19,6 +19,9 @@ ___
 </br>
 
 # Images
+
+<h3>
+  
 Title Screen.</br>
 ![Image of the title screen](https://github.com/MitchellGray100/Tanks/blob/main/src/Images/TitleScreen.png)
 
@@ -46,6 +49,8 @@ Shows the end of a game.</br>
 
 # GIFs
 
+<h3>
+  
 Full Game with Shield PowerUp.</br>
 ![GIF of Full Game with Shield PowerUp](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ShieldGIF.gif)
 
