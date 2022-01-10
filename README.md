@@ -14,6 +14,14 @@ makes sure there is always a way to get to the other tank.
 
 Music Credit: [ParagonX9](https://www.youtube.com/watch?v=QdL18RWUS8E).
 
+___
+
+</br>
+
+# Images
+
+<h3>
+  
 Title Screen.</br>
 ![Image of the title screen](https://github.com/MitchellGray100/Tanks/blob/main/src/Images/TitleScreen.png)
 
@@ -35,6 +43,14 @@ Shows a shielded tank after it got the shield powerup.</br>
 Shows the end of a game.</br>
 ![Image of a game over screen](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ImageSix.PNG)
 
+
+
+</br>
+
+# GIFs
+
+<h3>
+  
 Full Game with Shield PowerUp.</br>
 ![GIF of Full Game with Shield PowerUp](https://github.com/MitchellGray100/Tanks/blob/main/readMeImages/ShieldGIF.gif)
 
