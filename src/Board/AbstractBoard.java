@@ -105,7 +105,7 @@ public abstract class AbstractBoard implements Board {
 //		}
 		// Makes sure the game doesn't go into an infinite loop if there is a bug
 		if (temp.getPrev().getPrev().equals(temp)) {
-			System.out.println(y + " " + x + " TANK SPOT iS: " + c + " " + r);
+//			System.out.println(y + " " + x + " TANK SPOT iS: " + c + " " + r);
 			if (x > r) {
 				return Piece.Direction.RIGHT;
 			} else if (x < r) {
@@ -129,21 +129,21 @@ public abstract class AbstractBoard implements Board {
 			temp2 = temp;
 		}
 //		System.out.println(temp.getC() + " " + temp.getR() + " TANK POSITION iS: " + newC + " " + newR);
-		System.out.println(y + " " + x + " + " + c + " " + r);
+//		System.out.println(y + " " + x + " + " + c + " " + r);
 		if (temp2.getR() > newR) {
-			System.out.println("RIGHT");
+//			System.out.println("RIGHT");
 			return Piece.Direction.RIGHT;
 		} else if (temp2.getR() < newR) {
-			System.out.println("LEFT");
+//			System.out.println("LEFT");
 			return Piece.Direction.LEFT;
 		} else if (temp2.getC() > newC) {
-			System.out.println("DOWN");
+//			System.out.println("DOWN");
 			return piece.Piece.Direction.DOWN;
 		} else if (temp2.getC() < newC) {
-			System.out.println("UP");
+//			System.out.println("UP");
 			return piece.Piece.Direction.UP;
 		} else {
-			System.out.println("NONE ERROR");
+//			System.out.println("NONE ERROR");
 			return piece.Piece.Direction.NONE;
 		}
 
