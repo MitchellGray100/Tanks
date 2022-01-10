@@ -1,13 +1,13 @@
 package Controller;
 
 import Board.Board;
-import Board.BoardImpl;
+import Board.BoardDebugImpl;
 import Graph.Graph;
 import piece.Piece;
 import piece.Piece.Direction;
 
 public class ControllerImpl implements Controller {
-	private Board board = new BoardImpl();
+	private Board board = new BoardDebugImpl();
 	private Graph graph = generateBoard();
 
 	@Override

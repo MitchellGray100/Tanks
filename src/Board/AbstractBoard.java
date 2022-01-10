@@ -14,7 +14,7 @@ import piece.PieceFactory;
 
 public abstract class AbstractBoard implements Board {
 	PieceFactory factory = new PieceFactory();
-	Graph board = new Graph();
+	Graph board = new Graph(10, 10);
 
 	public Graph getBoard() {
 		return board;
@@ -26,31 +26,35 @@ public abstract class AbstractBoard implements Board {
 
 	public piece.Piece.Direction getAIMove(double r, double c, double x, double y) {
 		board.reset();
-		Graph newGraph = new Graph();
-		for (int row = 0; row < 10; row++) {
-			for (int col = 0; col < 10; col++) {
+		Graph newGraph = new Graph(100, 100);
+		for (int row = 0; row < 100; row++) {
+			for (int col = 0; col < 100; col++) {
 				newGraph.setNode(row, col, new Node(null, row, col));
 
 			}
 		}
 
-		int newR = (int) (r / (100));
-		int newC = (int) (c / (100));
-		int newX = (int) (x / (100));
-		int newY = (int) (y / (100));
+		int newR = ((int) (r) / 10 - (((int) (r) / 10) % 10));
+		int newC = ((int) (c) / 10 - (((int) (c) / 10) % 10));
+		int newX = ((int) (x) / 10 - (((int) (x) / 10) % 10)) + 5;
+		int newY = ((int) (y) / 10 - (((int) (y) / 10) % 10)) + 5;
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j < 10; j++) {
+						newGraph.setNode(i + (row * 10), j + (col * 10), board.getNode(col, row));
+						newGraph.getNode(i + (row * 10), j + (col * 10)).getEdges().clear();
+					}
+				}
 
-				newGraph.setNode(row, col, board.getNode(col, row));
-				newGraph.getNode(row, col).getEdges().clear();
 			}
 		}
 		newGraph.generateEdges();
 //DEBUGGING
 //		for (int row = 0; row < 10; row++) {
 //			for (int col = 0; col < 10; col++) {
-//				if (newGraph.getNode(row, col).getPiece() != null) {
-//					switch (newGraph.getNode(row, col).getPiece().getType()) {
+//				if (newGraph.getNode(row * 10, col * 10).getPiece() != null) {
+//					switch (newGraph.getNode(row * 10, col * 10).getPiece().getType()) {
 //					case BRICK:
 //						System.out.print("B");
 //						break;
@@ -97,43 +101,55 @@ public abstract class AbstractBoard implements Board {
 			}
 		}
 		Node temp2 = newGraph.getNode(newY, newX);
-		Node temp = newGraph.getNode(newY, newX).getPrev();
+//		Node temp = newGraph.getNode(newY, newX).getPrev();
 		// Makes sure the game doesn't throw errors if there isn't a path
-		if (temp == null) {
+//		if (temp == null) {
 //			System.out.println("error" + newX + " " + newY + " ");
-			return piece.Piece.Direction.NONE;
-		}
+//			return piece.Piece.Direction.NONE;
+//		}
 		// Makes sure the game doesn't go into an infinite loop if there is a bug
-		if (temp.getPrev().getPrev().equals(temp)) {
+//		if (temp.getPrev().getPrev().equals(temp)) {
 //			System.out.println("same square" + newX + " " + newY + " ");
+//			return piece.Piece.Direction.NONE;
+//		}
+//		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
+//			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
+//			temp2 = temp;
+//			temp = temp.getPrev();
+
+//	}
+//		if (temp != null) {
+//			temp2 = temp;
+//		}
+		System.out.println((temp2.getC() * 10) + 5 + " " + (temp2.getR() * 10) + " TANK POSITION iS: " + (newC + 5)
+				+ " " + (newR + 5));
+
+		if ((temp2.getR() * 10) > newR)
+
+		{
+			return Piece.Direction.RIGHT;
+		} else if ((temp2.getR() * 10) < newR) {
+			return Piece.Direction.LEFT;
+		} else if ((temp2.getC() * 10) + 5 > newC + 5) {
+			return piece.Piece.Direction.DOWN;
+		} else if ((temp2.getC() * 10) + 5 < newC + 5) {
+			return piece.Piece.Direction.UP;
+		} else {
+			if ((temp2.getR() * 10) > newR + 5)
+
+			{
+				return Piece.Direction.RIGHT;
+			} else if ((temp2.getR() * 10) < newR + 5) {
+				return Piece.Direction.LEFT;
+			}
 			return piece.Piece.Direction.NONE;
 		}
-		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
-//			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
-			temp2 = temp;
-			temp = temp.getPrev();
 
-		}
-		if (temp != null) {
-			temp2 = temp;
-		}
-//		System.out.println(temp.getC() + " " + temp.getR() + " TANK POSITION iS: " + newC + " " + newR);
-
-		if (temp2.getR() > newR) {
-			return Piece.Direction.RIGHT;
-		} else if (temp2.getR() < newR) {
-			return Piece.Direction.LEFT;
-		} else if (temp2.getC() > newC) {
-			return piece.Piece.Direction.DOWN;
-		} else if (temp2.getC() < newC) {
-			return piece.Piece.Direction.UP;
-		}
-		return piece.Piece.Direction.NONE;
 	}
 
 	@Override
 	public Graph generateBoard() {
-		Graph graph = new Graph();
+		Graph graph = new Graph(10, 10);
 		Piece[][] board = new Piece[10][10];
 
 		// Creates The Vertical Borders
@@ -192,7 +208,7 @@ public abstract class AbstractBoard implements Board {
 
 	@Override
 	public Graph generateGraph(Piece[][] board) {
-		Graph graph = new Graph();
+		Graph graph = new Graph(10, 10);
 		graph.generateGraph(board);
 
 		return graph;

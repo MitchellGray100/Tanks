@@ -9,13 +9,13 @@ import piece.Tank;
 public class Graph {
 	private Node[][] graph;
 
-	public Graph() {
-		graph = new Node[10][10];
+	public Graph(int r, int c) {
+		graph = new Node[r][c];
 	}
 
 	public void generateEdges() {
-		for (int r = 0; r < 10; r++) {
-			for (int c = 0; c < 10; c++) {
+		for (int r = 0; r < graph.length; r++) {
+			for (int c = 0; c < graph[r].length; c++) {
 				if (getNode(r, c).getPiece() != null) {
 					if (getNode(r, c).getPiece().getType() == Type.BRICK) {
 //						setNode(r, c, new Node(new Brick(), r, c));
@@ -62,8 +62,8 @@ public class Graph {
 	 * @param board The board of the game to be turned into a graph
 	 */
 	public void generateGraph(Piece[][] board) {
-		for (int r = 0; r < 10; r++) {
-			for (int c = 0; c < 10; c++) {
+		for (int r = 0; r < graph.length; r++) {
+			for (int c = 0; c < graph[r].length; c++) {
 				if (board[r][c] != null) {
 					if (board[r][c].getType() == Type.BRICK) {
 						setNode(r, c, new Node(new Brick(), r, c));
@@ -84,7 +84,7 @@ public class Graph {
 	}
 
 	private boolean generateGraphHelper(int r, int c) {
-		if (r < 0 || r > 9 || c < 0 || c > 9) {
+		if (r < 0 || r > graph.length - 1 || c < 0 || c > graph[r].length - 1) {
 			return false;
 		}
 		if (getNode(r, c).getPiece() == null) {
@@ -106,8 +106,8 @@ public class Graph {
 	}
 
 	public void reset() {
-		for (int r = 0; r < 10; r++) {
-			for (int c = 0; c < 10; c++) {
+		for (int r = 0; r < graph.length; r++) {
+			for (int c = 0; c < graph[r].length; c++) {
 				graph[r][c].setDistance(Integer.MAX_VALUE);
 			}
 		}
