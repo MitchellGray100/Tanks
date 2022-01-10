@@ -100,15 +100,26 @@ public abstract class AbstractBoard implements Board {
 		Node temp = newGraph.getNode(newY, newX).getPrev();
 		// Makes sure the game doesn't throw errors if there isn't a path
 		if (temp == null) {
-//			System.out.println("error" + newX + " " + newY + " ");
+			System.out.println("error" + newX + " " + newY + " ");
 			return piece.Piece.Direction.NONE;
 		}
 		// Makes sure the game doesn't go into an infinite loop if there is a bug
 		if (temp.getPrev().getPrev().equals(temp)) {
+			System.out.println(y + " " + x + " TANK SPOT iS: " + c + " " + r);
+			if (x > r) {
+				return Piece.Direction.RIGHT;
+			} else if (x < r) {
+				return Piece.Direction.LEFT;
+			} else if (y > c) {
+				return piece.Piece.Direction.DOWN;
+			} else {
+				return piece.Piece.Direction.UP;
+			}
 //			System.out.println("same square" + newX + " " + newY + " ");
-			return piece.Piece.Direction.NONE;
+//			return piece.Piece.Direction.NONE;
 		}
 		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
+
 //			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
 			temp2 = temp;
 			temp = temp.getPrev();
@@ -118,17 +129,24 @@ public abstract class AbstractBoard implements Board {
 			temp2 = temp;
 		}
 //		System.out.println(temp.getC() + " " + temp.getR() + " TANK POSITION iS: " + newC + " " + newR);
-
+		System.out.println(y + " " + x + " + " + c + " " + r);
 		if (temp2.getR() > newR) {
+			System.out.println("RIGHT");
 			return Piece.Direction.RIGHT;
 		} else if (temp2.getR() < newR) {
+			System.out.println("LEFT");
 			return Piece.Direction.LEFT;
 		} else if (temp2.getC() > newC) {
+			System.out.println("DOWN");
 			return piece.Piece.Direction.DOWN;
 		} else if (temp2.getC() < newC) {
+			System.out.println("UP");
 			return piece.Piece.Direction.UP;
+		} else {
+			System.out.println("NONE ERROR");
+			return piece.Piece.Direction.NONE;
 		}
-		return piece.Piece.Direction.NONE;
+
 	}
 
 	@Override
