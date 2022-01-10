@@ -389,10 +389,10 @@ public class Main extends Application {
 					tankOneMoveUp = false;
 					tankOneMoveDown = false;
 					if (playerOneControls.size() > 0) {
-						for (Character chars : playerOneControls) {
-							System.out.print((Character) chars);
-						}
-						System.out.println();
+//						for (Character chars : playerOneControls) {
+//							System.out.print((Character) chars);
+//						}
+//						System.out.println();
 						switch (playerOneControls.get(playerOneControls.size() - 1)) {
 						case 'a':
 							tankOneMoveLeft = true;
@@ -500,12 +500,12 @@ public class Main extends Application {
 					break;
 				case "tankTwo":
 
-					tankTwoMoveLeft = false;
-					tankTwoMoveRight = false;
-					tankTwoMoveUp = false;
-					tankTwoMoveDown = false;
 					if (playerTwoControls.size() > 0) {
 
+						tankTwoMoveLeft = false;
+						tankTwoMoveRight = false;
+						tankTwoMoveUp = false;
+						tankTwoMoveDown = false;
 						switch (playerTwoControls.get(playerTwoControls.size() - 1)) {
 						case 'j':
 							tankTwoMoveLeft = true;
@@ -958,23 +958,31 @@ public class Main extends Application {
 				}
 				break;
 			case LEFT:
-				if (!playerTwoControls.contains((Character) 'j')) {
-					playerTwoControls.add((Character) 'j');
+				if (twoPlayers) {
+					if (!playerTwoControls.contains((Character) 'j')) {
+						playerTwoControls.add((Character) 'j');
+					}
 				}
 				break;
 			case RIGHT:
-				if (!playerTwoControls.contains((Character) 'l')) {
-					playerTwoControls.add((Character) 'l');
+				if (twoPlayers) {
+					if (!playerTwoControls.contains((Character) 'l')) {
+						playerTwoControls.add((Character) 'l');
+					}
 				}
 				break;
 			case UP:
-				if (!playerTwoControls.contains((Character) 'i')) {
-					playerTwoControls.add((Character) 'i');
+				if (twoPlayers) {
+					if (!playerTwoControls.contains((Character) 'i')) {
+						playerTwoControls.add((Character) 'i');
+					}
 				}
 				break;
 			case DOWN:
-				if (!playerTwoControls.contains((Character) 'k')) {
-					playerTwoControls.add((Character) 'k');
+				if (twoPlayers) {
+					if (!playerTwoControls.contains((Character) 'k')) {
+						playerTwoControls.add((Character) 'k');
+					}
 				}
 				break;
 			case C:

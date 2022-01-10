@@ -105,7 +105,7 @@ public abstract class AbstractBoard implements Board {
 //		}
 		// Makes sure the game doesn't go into an infinite loop if there is a bug
 		if (temp.getPrev().getPrev().equals(temp)) {
-			System.out.println(y + " " + x + " TANK SPOT iS: " + c + " " + r);
+//			System.out.println(y + " " + x + " TANK SPOT iS: " + c + " " + r);
 			if (x > r) {
 				return Piece.Direction.RIGHT;
 			} else if (x < r) {
