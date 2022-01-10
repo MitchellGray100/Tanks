@@ -36,8 +36,8 @@ public abstract class AbstractBoard implements Board {
 
 		int newR = ((int) (r) / 10 - (((int) (r) / 10) % 10));
 		int newC = ((int) (c) / 10 - (((int) (c) / 10) % 10));
-		int newX = ((int) (x) / 10 - (((int) (x) / 10) % 10)) + 5;
-		int newY = ((int) (y) / 10 - (((int) (y) / 10) % 10)) + 5;
+		int newX = ((int) (x) / 10 - (((int) (x) / 10) % 10)) + 4;
+		int newY = ((int) (y) / 10 - (((int) (y) / 10) % 10)) + 4;
 		for (int row = 0; row < 10; row++) {
 			for (int col = 0; col < 10; col++) {
 				for (int i = 0; i < 10; i++) {
@@ -50,6 +50,15 @@ public abstract class AbstractBoard implements Board {
 			}
 		}
 		newGraph.generateEdges();
+
+		boolean leftMove = !(newGraph.getNode(newX - 4, newY).getPiece() != null
+				&& newGraph.getNode(newX - 4, newY).getPiece().getType().equals(piece.Piece.Type.BRICK));
+		boolean rightMove = !(newGraph.getNode(newX - 4, newY).getPiece() != null
+				&& newGraph.getNode(newX + 4, newY).getPiece().getType().equals(piece.Piece.Type.BRICK));
+		boolean upMove = !(newGraph.getNode(newX - 4, newY).getPiece() != null
+				&& !newGraph.getNode(newX, newY + 4).getPiece().getType().equals(piece.Piece.Type.BRICK));
+		boolean downMove = !(newGraph.getNode(newX - 4, newY).getPiece() != null
+				&& !newGraph.getNode(newX, newY - 4).getPiece().getType().equals(piece.Piece.Type.BRICK));
 //DEBUGGING
 //		for (int row = 0; row < 10; row++) {
 //			for (int col = 0; col < 10; col++) {
@@ -101,45 +110,45 @@ public abstract class AbstractBoard implements Board {
 			}
 		}
 		Node temp2 = newGraph.getNode(newY, newX);
-//		Node temp = newGraph.getNode(newY, newX).getPrev();
-		// Makes sure the game doesn't throw errors if there isn't a path
-//		if (temp == null) {
-//			System.out.println("error" + newX + " " + newY + " ");
-//			return piece.Piece.Direction.NONE;
-//		}
-		// Makes sure the game doesn't go into an infinite loop if there is a bug
-//		if (temp.getPrev().getPrev().equals(temp)) {
-//			System.out.println("same square" + newX + " " + newY + " ");
-//			return piece.Piece.Direction.NONE;
-//		}
-//		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
-//			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
-//			temp2 = temp;
-//			temp = temp.getPrev();
+		Node temp = newGraph.getNode(newY, newX).getPrev();
+//		 Makes sure the game doesn't throw errors if there isn't a path
+		if (temp == null) {
+			System.out.println("error" + newX + " " + newY + " ");
+			return piece.Piece.Direction.NONE;
+		}
+//		 Makes sure the game doesn't go into an infinite loop if there is a bug
+		if (temp.getPrev().getPrev().equals(temp)) {
+			System.out.println("same square" + newX + " " + newY + " ");
+			return piece.Piece.Direction.NONE;
+		}
+		while (!temp.getPrev().equals(newGraph.getNode(newC, newR))) {
+			System.out.println(temp.getC() + " " + temp.getR() + " TANK COLUMN iS: " + newC + " " + newR);
+			temp2 = temp;
+			temp = temp.getPrev();
 
-//	}
-//		if (temp != null) {
-//			temp2 = temp;
-//		}
-		System.out.println((temp2.getC() * 10) + 5 + " " + (temp2.getR() * 10) + " TANK POSITION iS: " + (newC + 5)
-				+ " " + (newR + 5));
+		}
+		if (temp != null) {
+			temp2 = temp;
+		}
+		System.out.println((temp2.getC() * 10) + 4 + " " + (temp2.getR() * 10) + " TANK POSITION iS: " + (newC + 4)
+				+ " " + (newR + 4));
 
-		if ((temp2.getR() * 10) > newR)
+		if ((temp2.getR() * 10) > newR && rightMove)
 
 		{
 			return Piece.Direction.RIGHT;
-		} else if ((temp2.getR() * 10) < newR) {
+		} else if ((temp2.getR() * 10) < newR && leftMove) {
 			return Piece.Direction.LEFT;
-		} else if ((temp2.getC() * 10) + 5 > newC + 5) {
+		} else if ((temp2.getC() * 10) + 4 > newC + 4 && downMove) {
 			return piece.Piece.Direction.DOWN;
-		} else if ((temp2.getC() * 10) + 5 < newC + 5) {
+		} else if ((temp2.getC() * 10) + 4 < newC + 4 && upMove) {
 			return piece.Piece.Direction.UP;
 		} else {
-			if ((temp2.getR() * 10) > newR + 5)
+			if ((temp2.getR() * 10) > newR + 4)
 
 			{
 				return Piece.Direction.RIGHT;
-			} else if ((temp2.getR() * 10) < newR + 5) {
+			} else if ((temp2.getR() * 10) < newR + 4) {
 				return Piece.Direction.LEFT;
 			}
 			return piece.Piece.Direction.NONE;
