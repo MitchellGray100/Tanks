@@ -485,69 +485,67 @@ public class Main extends Application {
 
 						tankTwoMoveUp = false;
 						tankTwoMoveDown = false;
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.RIGHT);
-							for (Piece piece : brickList) {
-								if (tankTwo.getBoundsInParent().intersects(piece.r * 100, piece.c * 100 + 5, 10, 90)) {
-									s.moveLeft();
-								}
-							}
-							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX(),
-									tankOne.getTranslateY() + 5, 10, 40)) {
+						controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.RIGHT);
+						for (Piece piece : brickList) {
+							if (tankTwo.getBoundsInParent().intersects(piece.r * 100, piece.c * 100 + 5, 10, 90)) {
 								s.moveLeft();
 							}
-							s.moveRight();
-						
+						}
+						if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX(), tankOne.getTranslateY() + 5,
+								10, 40)) {
+							s.moveLeft();
+						}
+						s.moveRight();
+
 					}
 					if (tankTwoMoveLeft) {
 						tankTwoMoveUp = false;
 						tankTwoMoveDown = false;
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.LEFT);
-							for (Piece piece : brickList) {
-								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 90, piece.c * 100 + 5, 10,
-										90)) {
-									s.moveRight();
-								}
-							}
-							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 40,
-									tankOne.getTranslateY() + 5, 10, 40)) {
+						controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.LEFT);
+						for (Piece piece : brickList) {
+							if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 90, piece.c * 100 + 5, 10, 90)) {
 								s.moveRight();
 							}
-							s.moveLeft();
-						
+						}
+						if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 40,
+								tankOne.getTranslateY() + 5, 10, 40)) {
+							s.moveRight();
+						}
+						s.moveLeft();
+
 					}
 					if (tankTwoMoveUp) {
 //						
 						tankTwoMoveLeft = false;
 						tankTwoMoveRight = false;
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.UP);
-							for (Piece piece : brickList) {
-								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100 + 90, 90,
-										10)) {
-									s.moveDown();
-								}
-							}
-							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 5,
-									tankOne.getTranslateY() + 40, 40, 10)) {
+						controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.UP);
+						for (Piece piece : brickList) {
+							if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100 + 90, 90, 10)) {
 								s.moveDown();
 							}
-							s.moveUp();
-						
+						}
+						if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 5,
+								tankOne.getTranslateY() + 40, 40, 10)) {
+							s.moveDown();
+						}
+						s.moveUp();
+
 					}
 					if (tankTwoMoveDown) {
 						tankTwoMoveLeft = false;
 						tankTwoMoveRight = false;
-							controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.DOWN);
-							for (Piece piece : brickList) {
-								if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100, 90, 10)) {
-									s.moveUp();
-								}
-							}
-							if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 5,
-									tankOne.getTranslateY(), 40, 10)) {
+						controller.getSquarePiece(tankTwo.r, tankTwo.c).setDirection(piece.Piece.Direction.DOWN);
+						for (Piece piece : brickList) {
+							if (tankTwo.getBoundsInParent().intersects(piece.r * 100 + 5, piece.c * 100, 90, 10)) {
 								s.moveUp();
 							}
-							s.moveDown();
-						
+						}
+						if (tankTwo.getBoundsInParent().intersects(tankOne.getTranslateX() + 5, tankOne.getTranslateY(),
+								40, 10)) {
+							s.moveUp();
+						}
+						s.moveDown();
+
 					}
 					if (!twoPlayers) {
 						tankTwoMoveUp = false;
@@ -560,6 +558,7 @@ public class Main extends Application {
 							if ((tankTwo.getTranslateX() % 100 <= 75 && tankTwo.getTranslateX() % 100 >= 50)
 									|| (tankTwo.getTranslateX() % 100 >= 25 && tankTwo.getTranslateX() % 100 <= 50)) {
 								tankTwoMoveLeft = true;
+//								System.out.println("UP DEBUG UP");
 							} else {
 //								System.out.println("TranslateX = " + tankTwo.getTranslateX());
 //								System.out.println("TranslateY = " + tankTwo.getTranslateY());
@@ -570,6 +569,7 @@ public class Main extends Application {
 							if ((tankTwo.getTranslateX() % 100 <= 75 && tankTwo.getTranslateX() % 100 >= 50)
 									|| (tankTwo.getTranslateX() % 100 >= 25 && tankTwo.getTranslateX() % 100 <= 50)) {
 								tankTwoMoveLeft = true;
+//								System.out.println("DOWN DEBUG DOWN");
 							} else {
 //								System.out.println("TranslateX = " + tankTwo.getTranslateX());
 //								System.out.println("TranslateY = " + tankTwo.getTranslateY());
@@ -580,6 +580,7 @@ public class Main extends Application {
 							if (tankTwo.getTranslateY() % 100 >= 75 && tankTwo.getTranslateY() % 100 <= 100
 									|| (tankTwo.getTranslateY() % 100 >= 0 && tankTwo.getTranslateY() % 100 <= 25)) {
 								tankTwoMoveDown = true;
+//								System.out.println("LEFT DEBUG LEFT");
 							} else {
 //								System.out.println("TranslateX = " + tankTwo.getTranslateX());
 //								System.out.println("TranslateY = " + tankTwo.getTranslateY());
@@ -589,6 +590,7 @@ public class Main extends Application {
 						case RIGHT:
 							if (tankTwo.getTranslateY() % 100 >= 75 && tankTwo.getTranslateY() % 100 <= 100
 									|| (tankTwo.getTranslateY() % 100 >= 0 && tankTwo.getTranslateY() % 100 <= 25)) {
+//								System.out.println("RIGHT DEBUG RIGHT");
 								tankTwoMoveDown = true;
 							} else {
 //								System.out.println("TranslateX = " + tankTwo.getTranslateX());
@@ -906,29 +908,25 @@ public class Main extends Application {
 				tankOneMoveDownHeld = true;
 				break;
 			case LEFT:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveLeft = true;
 					tankTwoMoveLeftHeld = true;
 				}
 				break;
 			case RIGHT:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveRight = true;
 					tankTwoMoveRightHeld = true;
 				}
 				break;
 			case UP:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveUp = true;
 					tankTwoMoveUpHeld = true;
 				}
 				break;
 			case DOWN:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveDown = true;
 					tankTwoMoveDownHeld = true;
 				}
@@ -962,31 +960,27 @@ public class Main extends Application {
 				tankOneMoveDownHeld = false;
 				break;
 			case LEFT:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveLeft = false;
 					tankTwoMoveLeftHeld = false;
 				}
 				break;
 			case RIGHT:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveRight = false;
 					tankTwoMoveRightHeld = false;
 				}
 				break;
 			case UP:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveUp = false;
 					tankTwoMoveUpHeld = false;
 				}
 				break;
 			case DOWN:
-				if (twoPlayers)
-				{
+				if (twoPlayers) {
 					tankTwoMoveDown = false;
-				tankTwoMoveLeftHeld = false;
+					tankTwoMoveLeftHeld = false;
 				}
 				break;
 			case C:

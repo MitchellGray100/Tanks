@@ -99,10 +99,10 @@ public abstract class AbstractBoard implements Board {
 		Node temp2 = newGraph.getNode(newY, newX);
 		Node temp = newGraph.getNode(newY, newX).getPrev();
 		// Makes sure the game doesn't throw errors if there isn't a path
-		if (temp == null) {
-			System.out.println("error" + newX + " " + newY + " ");
-			return piece.Piece.Direction.NONE;
-		}
+//		if (temp == null) {
+//			System.out.println("error" + newX + " " + newY + " ");
+//			return piece.Piece.Direction.NONE;
+//		}
 		// Makes sure the game doesn't go into an infinite loop if there is a bug
 		if (temp.getPrev().getPrev().equals(temp)) {
 			System.out.println(y + " " + x + " TANK SPOT iS: " + c + " " + r);
