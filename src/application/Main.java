@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -100,6 +101,8 @@ public class Main extends Application {
 	private MediaPlayer countDownLowPlayer;
 	private MediaPlayer countDownHighPlayer;
 	private MediaPlayer buttonPlayer;
+	ArrayList<Character> playerOneControls = new ArrayList<Character>();
+	ArrayList<Character> playerTwoControls = new ArrayList<Character>();
 
 	public Parent createTitleScene(Stage primaryStage) {
 		Pane titleScreen = new Pane();
@@ -381,6 +384,29 @@ public class Main extends Application {
 					}
 					break;
 				case "tankOne":
+					tankOneMoveLeft = false;
+					tankOneMoveRight = false;
+					tankOneMoveUp = false;
+					tankOneMoveDown = false;
+					if (playerOneControls.size() > 0) {
+						for (Character chars : playerOneControls) {
+							System.out.print((Character) chars);
+						}
+						System.out.println();
+						switch (playerOneControls.get(playerOneControls.size() - 1)) {
+						case 'a':
+							tankOneMoveLeft = true;
+							break;
+						case 'd':
+							tankOneMoveRight = true;
+							break;
+						case 'w':
+							tankOneMoveUp = true;
+							break;
+						case 's':
+							tankOneMoveDown = true;
+						}
+					}
 					tankOneBulletTimer -= .01
 							* ((Tank) controller.getSquarePiece(tankOne.r, tankOne.c)).getShootSpeedMultiplier();
 					if (tankOneBulletTimer < 0) {
@@ -473,6 +499,27 @@ public class Main extends Application {
 					}
 					break;
 				case "tankTwo":
+
+					tankTwoMoveLeft = false;
+					tankTwoMoveRight = false;
+					tankTwoMoveUp = false;
+					tankTwoMoveDown = false;
+					if (playerTwoControls.size() > 0) {
+
+						switch (playerTwoControls.get(playerTwoControls.size() - 1)) {
+						case 'j':
+							tankTwoMoveLeft = true;
+							break;
+						case 'l':
+							tankTwoMoveRight = true;
+							break;
+						case 'i':
+							tankTwoMoveUp = true;
+							break;
+						case 'k':
+							tankTwoMoveDown = true;
+						}
+					}
 					tankTwoBulletTimer -= .01
 							* ((Tank) controller.getSquarePiece(tankTwo.r, tankTwo.c)).getShootSpeedMultiplier();
 					if (tankTwoBulletTimer < 0) {
@@ -887,48 +934,47 @@ public class Main extends Application {
 		primaryStage.setHeight(1000);
 		primaryStage.setWidth(1000);
 		primaryStage.setTitle("Tanks 😎");
-
 		scene.setOnKeyPressed(e -> {
 
 			switch (e.getCode()) {
 			case A:
-				tankOneMoveLeft = true;
-				tankOneMoveLeftHeld = true;
+				if (!playerOneControls.contains((Character) 'a')) {
+					playerOneControls.add((Character) 'a');
+				}
 				break;
 			case D:
-				tankOneMoveRight = true;
-				tankOneMoveRightHeld = true;
+				if (!playerOneControls.contains((Character) 'd')) {
+					playerOneControls.add((Character) 'd');
+				}
 				break;
 			case W:
-				tankOneMoveUp = true;
-				tankOneMoveUpHeld = true;
+				if (!playerOneControls.contains((Character) 'w')) {
+					playerOneControls.add((Character) 'w');
+				}
 				break;
 			case S:
-				tankOneMoveDown = true;
-				tankOneMoveDownHeld = true;
+				if (!playerOneControls.contains((Character) 's')) {
+					playerOneControls.add((Character) 's');
+				}
 				break;
 			case LEFT:
-				if (twoPlayers) {
-					tankTwoMoveLeft = true;
-					tankTwoMoveLeftHeld = true;
+				if (!playerTwoControls.contains((Character) 'j')) {
+					playerTwoControls.add((Character) 'j');
 				}
 				break;
 			case RIGHT:
-				if (twoPlayers) {
-					tankTwoMoveRight = true;
-					tankTwoMoveRightHeld = true;
+				if (!playerTwoControls.contains((Character) 'l')) {
+					playerTwoControls.add((Character) 'l');
 				}
 				break;
 			case UP:
-				if (twoPlayers) {
-					tankTwoMoveUp = true;
-					tankTwoMoveUpHeld = true;
+				if (!playerTwoControls.contains((Character) 'i')) {
+					playerTwoControls.add((Character) 'i');
 				}
 				break;
 			case DOWN:
-				if (twoPlayers) {
-					tankTwoMoveDown = true;
-					tankTwoMoveDownHeld = true;
+				if (!playerTwoControls.contains((Character) 'k')) {
+					playerTwoControls.add((Character) 'k');
 				}
 				break;
 			case C:
@@ -944,43 +990,35 @@ public class Main extends Application {
 
 			switch (e.getCode()) {
 			case A:
-				tankOneMoveLeft = false;
-				tankOneMoveLeftHeld = false;
+				playerOneControls.remove((Character) 'a');
 				break;
 			case D:
-				tankOneMoveRight = false;
-				tankOneMoveRightHeld = false;
+				playerOneControls.remove((Character) 'd');
 				break;
 			case W:
-				tankOneMoveUp = false;
-				tankOneMoveUpHeld = false;
+				playerOneControls.remove((Character) 'w');
 				break;
 			case S:
-				tankOneMoveDown = false;
-				tankOneMoveDownHeld = false;
+				playerOneControls.remove((Character) 's');
 				break;
 			case LEFT:
 				if (twoPlayers) {
-					tankTwoMoveLeft = false;
-					tankTwoMoveLeftHeld = false;
+					playerTwoControls.remove((Character) 'j');
 				}
 				break;
 			case RIGHT:
 				if (twoPlayers) {
-					tankTwoMoveRight = false;
-					tankTwoMoveRightHeld = false;
+					playerTwoControls.remove((Character) 'l');
 				}
 				break;
 			case UP:
 				if (twoPlayers) {
-					tankTwoMoveUp = false;
-					tankTwoMoveUpHeld = false;
+					playerTwoControls.remove((Character) 'i');
 				}
 				break;
 			case DOWN:
 				if (twoPlayers) {
-					tankTwoMoveDown = false;
-					tankTwoMoveLeftHeld = false;
+					playerTwoControls.remove((Character) 'k');
 				}
 				break;
 			case C:
