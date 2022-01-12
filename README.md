@@ -18,6 +18,18 @@ ___
 
 </br>
 
+# Play
+
+<h3>
+  To Play, just download the .exe file: https://github.com/MitchellGray100/Tanks/raw/main/TanksWithNoSound.exe.
+  
+
+
+</br>
+</br>
+</br>
+
+
 # Images
 
 <h3>
