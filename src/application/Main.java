@@ -384,6 +384,7 @@ public class Main extends Application {
 					}
 					break;
 				case "tankOne":
+
 					tankOneMoveLeft = false;
 					tankOneMoveRight = false;
 					tankOneMoveUp = false;
@@ -499,11 +500,12 @@ public class Main extends Application {
 					}
 					break;
 				case "tankTwo":
-
-					tankTwoMoveLeft = false;
-					tankTwoMoveRight = false;
-					tankTwoMoveUp = false;
-					tankTwoMoveDown = false;
+					if (twoPlayers) {
+						tankTwoMoveLeft = false;
+						tankTwoMoveRight = false;
+						tankTwoMoveUp = false;
+						tankTwoMoveDown = false;
+					}
 					if (playerTwoControls.size() > 0) {
 						for (Character chars : playerTwoControls) {
 							System.out.print((Character) chars);
