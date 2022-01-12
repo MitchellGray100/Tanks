@@ -500,12 +500,15 @@ public class Main extends Application {
 					break;
 				case "tankTwo":
 
+					tankTwoMoveLeft = false;
+					tankTwoMoveRight = false;
+					tankTwoMoveUp = false;
+					tankTwoMoveDown = false;
 					if (playerTwoControls.size() > 0) {
-
-						tankTwoMoveLeft = false;
-						tankTwoMoveRight = false;
-						tankTwoMoveUp = false;
-						tankTwoMoveDown = false;
+						for (Character chars : playerTwoControls) {
+							System.out.print((Character) chars);
+						}
+						System.out.println();
 						switch (playerTwoControls.get(playerTwoControls.size() - 1)) {
 						case 'j':
 							tankTwoMoveLeft = true;
