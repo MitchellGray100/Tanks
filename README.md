@@ -22,7 +22,8 @@ ___
 
 <h3>
   To Play, just download the .exe file: https://github.com/MitchellGray100/Tanks/raw/main/TanksWithNoSound.exe<br>
-  or Play with sound by downloading the EXE Folder: https://github.com/MitchellGray100/Tanks/raw/main/EXE.
+  or Play with sound by downloading the project: https://github.com/MitchellGray100/Tanks/archive/refs/heads/main.zip
+  and running Tanks.exe in the EXE folder.
   
   <br>If you gen a JNI error, make sure to download [java](https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe).
   
